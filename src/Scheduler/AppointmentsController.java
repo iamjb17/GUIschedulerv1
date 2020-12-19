@@ -5,12 +5,12 @@ package Scheduler;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,11 +29,23 @@ public class AppointmentsController implements Initializable {
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
 
+    @FXML // fx:id="lbSignOut"
+    private Label lbSignOut; // Value injected by FXMLLoader
+
     @FXML // fx:id="btnSignOut"
     private Button btnSignOut; // Value injected by FXMLLoader
 
+    @FXML // fx:id="lbCustomers"
+    private Label lbCustomers; // Value injected by FXMLLoader
+
     @FXML // fx:id="btnCustomers"
     private Button btnCustomers; // Value injected by FXMLLoader
+
+    @FXML // fx:id="lbReports"
+    private Label lbReports; // Value injected by FXMLLoader
+
+    @FXML // fx:id="btnReports"
+    private Button btnReports; // Value injected by FXMLLoader
 
     @FXML // fx:id="lbAppointmentAlert"
     private Label lbAppointmentAlert; // Value injected by FXMLLoader
@@ -69,10 +81,10 @@ public class AppointmentsController implements Initializable {
     private TableColumn<Appointments, String> tcType; // Value injected by FXMLLoader
 
     @FXML // fx:id="tcStartDT"
-    private TableColumn<Appointments, Timestamp> tcStartDT; // Value injected by FXMLLoader
+    private TableColumn<Appointments, Calendar> tcStartDT; // Value injected by FXMLLoader
 
     @FXML // fx:id="tcEndDT"
-    private TableColumn<Appointments, Timestamp> tcEndDT; // Value injected by FXMLLoader
+    private TableColumn<Appointments, Calendar> tcEndDT; // Value injected by FXMLLoader
 
     @FXML // fx:id="tcCustomerID"
     private TableColumn<Appointments, Integer> tcCustomerID; // Value injected by FXMLLoader
@@ -83,29 +95,56 @@ public class AppointmentsController implements Initializable {
     @FXML // fx:id="lbTableErrorMessage"
     private Label lbTableErrorMessage; // Value injected by FXMLLoader
 
+    @FXML // fx:id="lbApptID"
+    private Label lbApptID; // Value injected by FXMLLoader
+
     @FXML // fx:id="tfAppointmentID"
     private TextField tfAppointmentID; // Value injected by FXMLLoader
+
+    @FXML // fx:id="lbContact"
+    private Label lbContact; // Value injected by FXMLLoader
 
     @FXML // fx:id="cbContactPerson"
     private ComboBox<String> cbContactPerson; // Value injected by FXMLLoader
 
+    @FXML // fx:id="lbTitle"
+    private Label lbTitle; // Value injected by FXMLLoader
+
     @FXML // fx:id="tfTitle"
     private TextField tfTitle; // Value injected by FXMLLoader
+
+    @FXML // fx:id="lbType"
+    private Label lbType; // Value injected by FXMLLoader
 
     @FXML // fx:id="tfType"
     private TextField tfType; // Value injected by FXMLLoader
 
+    @FXML // fx:id="lbLocation"
+    private Label lbLocation; // Value injected by FXMLLoader
+
     @FXML // fx:id="tfLocation"
     private TextField tfLocation; // Value injected by FXMLLoader
+
+    @FXML // fx:id="lbCustomerID"
+    private Label lbCustomerID; // Value injected by FXMLLoader
 
     @FXML // fx:id="tfCustomerID"
     private TextField tfCustomerID; // Value injected by FXMLLoader
 
+    @FXML // fx:id="lbStart"
+    private Label lbStart; // Value injected by FXMLLoader
+
     @FXML // fx:id="tfStartDT"
     private TextField tfStartDT; // Value injected by FXMLLoader
 
+    @FXML // fx:id="lbEnd"
+    private Label lbEnd; // Value injected by FXMLLoader
+
     @FXML // fx:id="tfEndDT"
     private TextField tfEndDT; // Value injected by FXMLLoader
+
+    @FXML // fx:id="lbUserID"
+    private Label lbUserID; // Value injected by FXMLLoader
 
     @FXML // fx:id="tfUserID"
     private TextField tfUserID; // Value injected by FXMLLoader
@@ -122,11 +161,19 @@ public class AppointmentsController implements Initializable {
     @FXML // fx:id="lbFormErrorMessage"
     private Label lbFormErrorMessage; // Value injected by FXMLLoader
 
+    @FXML // fx:id="lbDescription"
+    private Label lbDescription; // Value injected by FXMLLoader
+
     @FXML // fx:id="tfDescription"
     private TextField tfDescription; // Value injected by FXMLLoader
 
+    // Storage for form data
     private final HashMap<String, String> formData = new HashMap<>();
 
+    // Current calendar instance
+    public Calendar calendar = Calendar.getInstance();
+
+    // Add data from the form to the storage hashmap
     private void addFormDataToMap() {
         formData.clear();
         formData.put("appointment ID", tfAppointmentID.getText());
@@ -142,7 +189,7 @@ public class AppointmentsController implements Initializable {
 
     }
 
-    // get index of selected item
+    // get index of selected item of the tableview once clicked
     private int getIndex(int ID, String toWhichCollection) {
         int currentIndex = -1;
         switch (toWhichCollection) {
@@ -173,23 +220,7 @@ public class AppointmentsController implements Initializable {
         return currentIndex;
     }
 
-    // Sort appointments container
-    private ObservableList<Appointments> sortContainerByWeek() {
-        // TODO you can sort week and month in sql. take appt out of the big method and make one for here
-        AppHelper.appointments.sort(Comparator.comparing(Appointments::getTitle));
-        return null;
-    }
-
-    private String getContactName(int ID) {
-        for (Contacts contacts : AppHelper.contacts) {
-            if (contacts.getContactID() == ID) {
-                return contacts.getContactName();
-            }
-            return "";
-        }
-        return "";
-    }
-
+    // Get all contact names and put them in a list
     private ObservableList<String> getContactNames() {
         ObservableList<String> names = FXCollections.observableArrayList();
         for (Contacts contact: AppHelper.contacts) {
@@ -198,48 +229,26 @@ public class AppointmentsController implements Initializable {
         return names;
     }
 
+    // Once an appointment is clicked, add its data to the form for editing
     private void addDataToForm() {
         tfAppointmentID.setText(String.valueOf(tvAppointments.getSelectionModel().getSelectedItem().getAppointmentID()));
         tfTitle.setText(tvAppointments.getSelectionModel().getSelectedItem().getTitle());
-        tfStartDT.setText(String.valueOf(tvAppointments.getSelectionModel().getSelectedItem().getStart()));
-        tfEndDT.setText(String.valueOf(tvAppointments.getSelectionModel().getSelectedItem().getEnd()));
+        tfStartDT.setText(String.valueOf(tvAppointments.getSelectionModel().getSelectedItem().getStart().getTime()));
+        tfEndDT.setText(String.valueOf(tvAppointments.getSelectionModel().getSelectedItem().getEnd().getTime()));
         tfType.setText(tvAppointments.getSelectionModel().getSelectedItem().getType());
         tfLocation.setText(tvAppointments.getSelectionModel().getSelectedItem().getLocation());
         tfUserID.setText(String.valueOf(tvAppointments.getSelectionModel().getSelectedItem().getUserID()));
         tfCustomerID.setText(String.valueOf(tvAppointments.getSelectionModel().getSelectedItem().getCustomerID()));
         cbContactPerson.getSelectionModel().select(tvAppointments.getSelectionModel().getSelectedItem().getContactName());
 
-        System.out.println(tvAppointments.getSelectionModel().getSelectedItem().getDescription());
         tfDescription.setText(tvAppointments.getSelectionModel().getSelectedItem().getDescription());
 
-//        switch (whichSort) {
-//            case "week":
-//                tfAppointmentID.setText(String.valueOf(tvAppointmentsByWeek.getSelectionModel().getSelectedItem().getAppointmentID()));
-//                tfTitle.setText(tvAppointmentsByWeek.getSelectionModel().getSelectedItem().getTitle());
-//                tfStartDT.setText(String.valueOf(tvAppointmentsByWeek.getSelectionModel().getSelectedItem().getStart()));
-//                tfEndDT.setText(String.valueOf(tvAppointmentsByWeek.getSelectionModel().getSelectedItem().getEnd()));
-//                tfType.setText(tvAppointmentsByWeek.getSelectionModel().getSelectedItem().getType());
-//                tfLocation.setText(tvAppointmentsByWeek.getSelectionModel().getSelectedItem().getLocation());
-//                tfUserID.setText(String.valueOf(tvAppointmentsByWeek.getSelectionModel().getSelectedItem().getUserID()));
-//                tfCustomerID.setText(String.valueOf(tvAppointmentsByWeek.getSelectionModel().getSelectedItem().getCustomerID()));
-//                cbContactPerson.getSelectionModel().select(getContactName(tvAppointmentsByWeek.getSelectionModel().getSelectedItem().getContactID()));
-//                break;
-//            case "month":
-//                tfAppointmentID.setText(String.valueOf(tvAppointmentsByMonth.getSelectionModel().getSelectedItem().getAppointmentID()));
-//                tfTitle.setText(tvAppointmentsByMonth.getSelectionModel().getSelectedItem().getTitle());
-//                tfStartDT.setText(String.valueOf(tvAppointmentsByMonth.getSelectionModel().getSelectedItem().getStart()));
-//                tfEndDT.setText(String.valueOf(tvAppointmentsByMonth.getSelectionModel().getSelectedItem().getEnd()));
-//                tfType.setText(tvAppointmentsByMonth.getSelectionModel().getSelectedItem().getType());
-//                tfLocation.setText(tvAppointmentsByMonth.getSelectionModel().getSelectedItem().getLocation());
-//                tfUserID.setText(String.valueOf(tvAppointmentsByMonth.getSelectionModel().getSelectedItem().getUserID()));
-//                tfCustomerID.setText(String.valueOf(tvAppointmentsByMonth.getSelectionModel().getSelectedItem().getCustomerID()));
-//                cbContactPerson.getSelectionModel().select(getContactName(tvAppointmentsByMonth.getSelectionModel().getSelectedItem().getContactID()));
-//                break;
-//        }
     }
 
+    // Clear all of the form data storage and text fields
     private void clearFormData() {
         formData.clear();
+        // set the form buttons to default disablity position
         btnUpdateAppointment.setDisable(true);
         btnAddAppointment.setDisable(false);
         tfCustomerID.clear();
@@ -257,6 +266,7 @@ public class AppointmentsController implements Initializable {
 
     }
 
+    // Get the next available number for the appointment ID field
     private int autoNextGenApptID() {
         TreeSet<Integer> temp = new TreeSet<>();
         int curr = 1;
@@ -271,16 +281,53 @@ public class AppointmentsController implements Initializable {
                 return curr;
             }
         }
-        System.out.println(temp);
         return curr;
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // Set display text in proper language
+        lbCustomers.setText(AppHelper.localeRB.getString("lbCustomers"));
+        lbSignOut.setText(AppHelper.localeRB.getString("lbSignOut"));
+        rbApptByWeek.setText(AppHelper.localeRB.getString("rbApptByWeek"));
+        rbApptByMonth.setText(AppHelper.localeRB.getString("rbApptByMonth"));
+        tcID.setText(AppHelper.localeRB.getString("ID"));
+        tcTitle.setText(AppHelper.localeRB.getString("Title"));
+        tcDescription.setText(AppHelper.localeRB.getString("Description"));
+        tcLocation.setText(AppHelper.localeRB.getString("Location"));
+        tcType.setText(AppHelper.localeRB.getString("Type"));
+        tcStartDT.setText(AppHelper.localeRB.getString("Start"));
+        tcEndDT.setText(AppHelper.localeRB.getString("End"));
+        tcContact.setText(AppHelper.localeRB.getString("tcContact"));
+        tcCustomerID.setText(AppHelper.localeRB.getString("CustomerID"));
+        lbApptID.setText(AppHelper.localeRB.getString("lbApptID"));
+        lbCustomerID.setText(AppHelper.localeRB.getString("CustomerID"));
+        lbTitle.setText(AppHelper.localeRB.getString("Title"));
+        lbContact.setText(AppHelper.localeRB.getString("lbContact"));
+        lbLocation.setText(AppHelper.localeRB.getString("Location"));
+        lbType.setText(AppHelper.localeRB.getString("Type"));
+        lbStart.setText(AppHelper.localeRB.getString("Start"));
+        lbEnd.setText(AppHelper.localeRB.getString("End"));
+        lbDescription.setText(AppHelper.localeRB.getString("Description"));
+        lbUserID.setText(AppHelper.localeRB.getString("UserID"));
+        btnAddAppointment.setText(AppHelper.localeRB.getString("btnAddAppt"));
+        btnClearForm.setText(AppHelper.localeRB.getString("btnClear"));
+        btnUpdateAppointment.setText(AppHelper.localeRB.getString("btnUpdateAppt"));
+        btnDeleteAppointment.setText(AppHelper.localeRB.getString("btnDeleteAppt"));
+
+        // Clear form data, just in case
         formData.clear();
-        // TODO rework some of the this classes code. fix desc, simplify the appointments
+
+        // Get all initial data from data that will be used in this screen
         DBHelper.getAllAppointments();
+
+        // Check for appointments that is within 15 min of login.
+        if (AppHelper.apptIDSoon != -1) {
+            lbAppointmentAlert.setText(AppHelper.localeRB.getString("altAppt") + AppHelper.apptIDSoon + " " +
+                    AppHelper.localeRB.getString("altStartingSoon") + AppHelper.apptTDSoon.getTime().toString() + "!");
+        }
 
         // set up table view by week
         tcID.setCellValueFactory(new PropertyValueFactory<Appointments, Integer>("appointmentID"));
@@ -289,49 +336,68 @@ public class AppointmentsController implements Initializable {
         tcLocation.setCellValueFactory(new PropertyValueFactory<Appointments, String>("location"));
         tcContact.setCellValueFactory(new PropertyValueFactory<Appointments, String>("contactName"));
         tcType.setCellValueFactory(new PropertyValueFactory<Appointments, String>("type"));
-        tcStartDT.setCellValueFactory(new PropertyValueFactory<Appointments, Timestamp>("start"));
-        tcEndDT.setCellValueFactory(new PropertyValueFactory<Appointments, Timestamp>("end"));
+        tcStartDT.setCellValueFactory(new PropertyValueFactory<Appointments, Calendar>("start"));
+        tcEndDT.setCellValueFactory(new PropertyValueFactory<Appointments, Calendar>("end"));
         tcCustomerID.setCellValueFactory(new PropertyValueFactory<Appointments, Integer>("customerID"));
 
-        // setup table view by month
-//        tcIDByMonth.setCellValueFactory(new PropertyValueFactory<Appointments, Integer>("appointmentID"));
-//        tcTitleByMonth.setCellValueFactory(new PropertyValueFactory<Appointments, String>("title"));
-//        tcDescriptionByMonth.setCellValueFactory(new PropertyValueFactory<Appointments, String>("description"));
-//        tcLocationByMonth.setCellValueFactory(new PropertyValueFactory<Appointments, String>("location"));
-//        tcContactByMonth.setCellValueFactory(new PropertyValueFactory<Appointments, String>("contactID"));
-//        tcTypeByMonth.setCellValueFactory(new PropertyValueFactory<Appointments, String>("type"));
-//        tcStartDTByMonth.setCellValueFactory(new PropertyValueFactory<Appointments, Timestamp>("start"));
-//        tcEndDTByMonth.setCellValueFactory(new PropertyValueFactory<Appointments, Timestamp>("end"));
-//        tcCustomerIDByMonth.setCellValueFactory(new PropertyValueFactory<Appointments, Integer>("customerID"));
+        // Set the correct values for the start and end columns
+        DateFormat dateFormat = DateFormat.getDateTimeInstance();
+        tcStartDT.setCellFactory(col -> new TableCell<Appointments, Calendar>() {
+            @Override
+            protected void updateItem(Calendar date, boolean empty) {
+                super.updateItem(date, empty);
+                if (empty) {
+                    setText(null);
+                } else {
 
-//        if (!AppHelper.apptsByWeek.isEmpty()) {
-//            if (rbApptByMonth.isSelected()) {
-//                tvAppointments.setItems(AppHelper.apptsByMonth);
-//            } else {
-//                tvAppointments.setItems(AppHelper.apptsByWeek);
-//            }
-//        }
+                    setText(dateFormat.format(date.getTime()) + " " + date.getTimeZone().getDisplayName());
+                }
+            }
+        });
+        tcEndDT.setCellFactory(col -> new TableCell<Appointments, Calendar>() {
+            @Override
+            protected void updateItem(Calendar date, boolean empty) {
+                super.updateItem(date, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(dateFormat.format(date.getTime()) + " " + date.getTimeZone().getDisplayName());
+                }
+            }
+        });
 
+        // Set the data for the contact person combobox
+        cbContactPerson.setItems(getContactNames());
+
+        // Put the correct next available appointment id in the correct field
+        tfAppointmentID.setText(String.valueOf(autoNextGenApptID()));
+
+        // Set the appointments table with correct data depending on sort order of weeks and months
         if (rbApptByMonth.isSelected()) {
             if (!AppHelper.apptsByMonth.isEmpty()) {
                 tvAppointments.setItems(AppHelper.apptsByMonth);
+                tvAppointments.refresh();
             }
         } else if (rbApptByWeek.isSelected()){
             if (!AppHelper.apptsByWeek.isEmpty()) {
                 tvAppointments.setItems(AppHelper.apptsByWeek);
+                tvAppointments.refresh();
             }
         }
 
+        // Set the appointments table with correct data depending on sort order of months
         rbApptByMonth.setOnAction(event -> {
             tvAppointments.setItems(AppHelper.apptsByMonth);
             tvAppointments.refresh();
         });
 
+        // Set the appointments table with correct data depending on sort order of weeks
         rbApptByWeek.setOnAction(event -> {
             tvAppointments.setItems(AppHelper.apptsByWeek);
             tvAppointments.refresh();
         });
 
+        // If the appointments table is clicked add the data to the form for editing and set form buttons and remove error messages
         tvAppointments.setOnMouseClicked(event -> {
             addDataToForm();
             btnAddAppointment.setDisable(true);
@@ -339,48 +405,72 @@ public class AppointmentsController implements Initializable {
             lbFormErrorMessage.setVisible(false);
             lbTableErrorMessage.setVisible(false);
         });
-//        tvAppointmentsByWeek.setOnMouseClicked(event -> {
-//            addDataToForm("week");
-//            btnAddAppointment.setDisable(true);
-//            btnUpdateAppointment.setDisable(false);
-//            lbFormErrorMessage.setVisible(false);
-//            lbTableErrorMessage.setVisible(false);
-//        });
 
-        cbContactPerson.setItems(getContactNames());
-        tfAppointmentID.setText(String.valueOf(autoNextGenApptID()));
 
+        // Once add appointment button is clicked check the fields for correctness and attempt to add to database
         btnAddAppointment.setOnAction(event -> {
             addFormDataToMap();
             String status = AppHelper.checkFormCorrectness(formData);
             if (status.equals("correct")) {
-                DBHelper.addAppointment(AppHelper.createApptFromFormData(formData));
-                AppHelper.appointments.add(AppHelper.createApptFromFormData(formData));
-                AppHelper.apptsByMonth.add(AppHelper.createApptFromFormData(formData));
-                AppHelper.apptsByWeek.add(AppHelper.createApptFromFormData(formData));
+                try {
+                    AppHelper.startCalendar = AppHelper.createApptFromFormData(formData).getStart();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    AppHelper.endCalendar = AppHelper.createApptFromFormData(formData).getStart();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    DBHelper.addAppointment(AppHelper.createApptFromFormData(formData));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    AppHelper.appointments.add(AppHelper.createApptFromFormData(formData));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    AppHelper.apptsByMonth.add(AppHelper.createApptFromFormData(formData));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    AppHelper.apptsByWeek.add(AppHelper.createApptFromFormData(formData));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 DBHelper.getAllAppointments();
                 tvAppointments.refresh();
                 clearFormData();
                 tfAppointmentID.setText(String.valueOf(autoNextGenApptID()));
             } else {
+                // if errors occur describe them
                 lbFormErrorMessage.setText(status);
                 lbFormErrorMessage.setVisible(true);
             }
             tvAppointments.refresh();
         });
 
+        // Clear all form data and reset form
         btnClearForm.setOnAction(event -> {
             clearFormData();
             btnUpdateAppointment.setDisable(true);
             btnAddAppointment.setDisable(false);
         });
 
-        // TODO rework this method put the tabs at the top of the if it think
+        // Once delete button clicked check if appointment selected and attempt to delete the appointment from database and reset form
         btnDeleteAppointment.setOnAction(event -> {
             if (!tvAppointments.getSelectionModel().isEmpty()) {
                 boolean isDeleted = DBHelper.deleteAppointment(tvAppointments.getSelectionModel().getSelectedItem().getAppointmentID());
                 if (isDeleted) {
-                    lbTableErrorMessage.setText("Appointment Deleted Successfully");
+                    // deletion success message
+                    lbTableErrorMessage.setText(AppHelper.localeRB.getString("lbApptID") + ": " +
+                            tvAppointments.getSelectionModel().getSelectedItem().getAppointmentID() + " " +
+                            AppHelper.localeRB.getString("Type") + ": " + tvAppointments.getSelectionModel().getSelectedItem().getType() +
+                            " " + AppHelper.localeRB.getString("erDeleteSuc"));
                     lbTableErrorMessage.setVisible(true);
                     AppHelper.apptsByMonth.remove(tvAppointments.getSelectionModel().getSelectedItem());
                     AppHelper.apptsByWeek.remove(tvAppointments.getSelectionModel().getSelectedItem());
@@ -390,108 +480,58 @@ public class AppointmentsController implements Initializable {
                     clearFormData();
                     tfAppointmentID.setText(String.valueOf(autoNextGenApptID()));
                 } else if(!isDeleted) {
+                    // deletion failed messaged
                     lbTableErrorMessage.setText("Unable To Delete Appointment");
                     lbTableErrorMessage.setVisible(true);
                 }
             }
-//            if(rbApptByMonth.isSelected()) {
-//                if (!tvAppointments.getSelectionModel().isEmpty()) {
-//                    boolean isDeleted = DBHelper.deleteAppointment(tvAppointments.getSelectionModel().getSelectedItem().getAppointmentID());
-//                    if (isDeleted) {
-//                        AppHelper.apptsByMonth.remove(tvAppointments.getSelectionModel().getSelectedItem());
-//                        AppHelper.apptsByWeek.remove(tvAppointments.getSelectionModel().getSelectedItem());
-//                        AppHelper.appointments.remove(tvAppointments.getSelectionModel().getSelectedItem());
-//                        clearFormData();
-//                        lbTableErrorMessage.setText("Appointment Deleted Successfully");
-//                        lbTableErrorMessage.setVisible(true);
-//                    } else {
-//                        lbTableErrorMessage.setText("Unable To Delete Appointment");
-//                        lbTableErrorMessage.setVisible(true);
-//                    }
-//                } else {
-//                    if (!tvAppointments.getSelectionModel().isEmpty()) {
-//                        if (DBHelper.deleteAppointment(tvAppointments.getSelectionModel().getSelectedItem().getAppointmentID())) {
-//                            AppHelper.apptsByWeek.remove(tvAppointments.getSelectionModel().getSelectedItem());
-//                            clearFormData();
-//                            lbTableErrorMessage.setText("Appointment Deleted Successfully");
-//                            lbTableErrorMessage.setVisible(true);
-//                        } else {
-//                            lbTableErrorMessage.setText("Unable To Delete Appointment");
-//                            lbTableErrorMessage.setVisible(true);
-//                        }
-//                    }
-//                }
-//            }
-//            lbTableErrorMessage.setText("Unable To Delete Appointment");
-//            lbTableErrorMessage.setVisible(true);
-
-//            if(!tvAppointmentsByWeek.getSelectionModel().isEmpty()) {
-//                if(tabByMonth.isSelected()) {
-//                    if(DBHelper.deleteAppointment(tvAppointmentsByMonth.getSelectionModel().getSelectedItem().getAppointmentID())) {
-//                        lbTableErrorMessage.setText("Appointment Deleted Successfully");
-//                    } else {
-//                        lbTableErrorMessage.setText("Unable To Delete Appointment");
-//                        lbTableErrorMessage.setVisible(true);
-//                    }
-//                } else if (tabByWeek.isSelected()) {
-//                    if(DBHelper.deleteAppointment(tvAppointmentsByWeek.getSelectionModel().getSelectedItem().getAppointmentID())) {
-//                        lbTableErrorMessage.setText("Appointment Deleted Successfully");
-//                        lbTableErrorMessage.setVisible(true);
-//                    } else {
-//                        lbTableErrorMessage.setText("Unable To Delete Appointment");
-//                        lbTableErrorMessage.setVisible(true);
-//                    }
-//                } else{
-//                    lbTableErrorMessage.setText("No Appointment Selected");
-//                    lbTableErrorMessage.setVisible(true);
-//                }
-//            } else {
-//                if(!tvAppointmentsByMonth.getSelectionModel().isEmpty()) {
-//                    if(tabByMonth.isSelected()){
-//                        if(DBHelper.deleteAppointment(tvAppointmentsByMonth.getSelectionModel().getSelectedItem().getAppointmentID())) {
-//                            lbTableErrorMessage.setText("Appointment Deleted Successfully");
-//                        } else {
-//                            lbTableErrorMessage.setText("Unable To Delete Appointment");
-//                            lbTableErrorMessage.setVisible(true);
-//                        }
-//                    } else if (tabByWeek.isSelected()) {
-//                        if(DBHelper.deleteAppointment(tvAppointmentsByWeek.getSelectionModel().getSelectedItem().getAppointmentID())) {
-//                            lbTableErrorMessage.setText("Appointment Deleted Successfully");
-//                            lbTableErrorMessage.setVisible(true);
-//                        } else {
-//                            lbTableErrorMessage.setText("Unable To Delete Appointment");
-//                            lbTableErrorMessage.setVisible(true);
-//                        }
-//                    } else{
-//                        lbTableErrorMessage.setText("No Appointment Selected");
-//                        lbTableErrorMessage.setVisible(true);
-//                    }
-//                } else {
-//                    lbTableErrorMessage.setText("No Appointment Selected");
-//                    lbTableErrorMessage.setVisible(true);
-//                }
-//            }
         });
 
+        // Attempt the update the appointment in the data base with values from form
         btnUpdateAppointment.setOnAction(event -> {
             addFormDataToMap();
             String status = AppHelper.checkFormCorrectness(formData);
             if (status.equals("correct")) {
-                DBHelper.updateAppointment(AppHelper.createApptFromFormData(formData));
+                try {
+                    DBHelper.updateAppointment(AppHelper.createApptFromFormData(formData));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 if (rbApptByWeek.isSelected()){
                     Appointments selAppt = tvAppointments.getSelectionModel().getSelectedItem();
-                    AppHelper.apptsByWeek.set(tvAppointments.getSelectionModel().getSelectedIndex(), AppHelper.createApptFromFormData(formData));
-                    AppHelper.apptsByMonth.set(getIndex(selAppt.getAppointmentID(), "month"), AppHelper.createApptFromFormData(formData));
-                    AppHelper.appointments.set(getIndex(selAppt.getAppointmentID(), "all"), AppHelper.createApptFromFormData(formData));
+                    try {
+                        AppHelper.apptsByWeek.set(tvAppointments.getSelectionModel().getSelectedIndex(), AppHelper.createApptFromFormData(formData));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        AppHelper.apptsByMonth.set(getIndex(selAppt.getAppointmentID(), "month"), AppHelper.createApptFromFormData(formData));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        AppHelper.appointments.set(getIndex(selAppt.getAppointmentID(), "all"), AppHelper.createApptFromFormData(formData));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 } else if (rbApptByMonth.isSelected()){
                     Appointments selAppt = tvAppointments.getSelectionModel().getSelectedItem();
-                    AppHelper.apptsByWeek.set(getIndex(selAppt.getAppointmentID(), "week"), AppHelper.createApptFromFormData(formData));
-                    AppHelper.apptsByMonth.set(tvAppointments.getSelectionModel().getSelectedIndex(), AppHelper.createApptFromFormData(formData));
-                    AppHelper.appointments.set(getIndex(selAppt.getAppointmentID(), "all"), AppHelper.createApptFromFormData(formData));
+                    try {
+                        AppHelper.apptsByWeek.set(getIndex(selAppt.getAppointmentID(), "week"), AppHelper.createApptFromFormData(formData));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        AppHelper.apptsByMonth.set(tvAppointments.getSelectionModel().getSelectedIndex(), AppHelper.createApptFromFormData(formData));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        AppHelper.appointments.set(getIndex(selAppt.getAppointmentID(), "all"), AppHelper.createApptFromFormData(formData));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
-//                AppHelper.apptsByWeek.set(tvAppointments.getSelectionModel().getFocusedIndex(), AppHelper.createApptFromFormData(formData));
-//                AppHelper.apptsByMonth.set(Integer.parseInt(formData.get("appointment ID"))-1, AppHelper.createApptFromFormData(formData));
-//                AppHelper.appointments.set(Integer.parseInt(formData.get("appointment ID"))-1, AppHelper.createApptFromFormData(formData));
                 tvAppointments.refresh();
                 clearFormData();
                 tfAppointmentID.setText(String.valueOf(autoNextGenApptID()));
@@ -501,6 +541,7 @@ public class AppointmentsController implements Initializable {
             }
         });
 
+        // Go to customer window and reset the data
         btnCustomers.setOnAction(event -> {
             AppHelper.resetData();
             Parent parent = null;
@@ -513,6 +554,7 @@ public class AppointmentsController implements Initializable {
             primaryStage.setScene(new Scene(parent));
         });
 
+        // Sign out of the app and clear session data
         btnSignOut.setOnAction(event -> {
             AppHelper.clearSessionData();
             Parent parent = null;
@@ -524,6 +566,20 @@ public class AppointmentsController implements Initializable {
             Stage primaryStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             primaryStage.setScene(new Scene(parent));
         });
+
+        // Go to reports window and set the variable of backWhere to appointments
+        btnReports.setOnAction(event -> {
+            AppHelper.backWhere = "appointment";
+            Parent parent = null;
+            try {
+                parent = FXMLLoader.load(getClass().getResource("../Resources/SummaryReport.fxml"));
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+            Stage primaryStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            primaryStage.setScene(new Scene(parent));
+        });
+
 
         // If any of the the form fields get focused, remove error message
         tfTitle.setOnMouseClicked(event -> { lbFormErrorMessage.setVisible(false); lbTableErrorMessage.setVisible(false);});
@@ -540,8 +596,12 @@ public class AppointmentsController implements Initializable {
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
+        assert lbSignOut != null : "fx:id=\"lbSignOut\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert btnSignOut != null : "fx:id=\"btnSignOut\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert lbCustomers != null : "fx:id=\"lbCustomers\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert btnCustomers != null : "fx:id=\"btnCustomers\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert lbReports != null : "fx:id=\"lbReports\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert btnReports != null : "fx:id=\"btnReports\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert lbAppointmentAlert != null : "fx:id=\"lbAppointmentAlert\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert rbApptByWeek != null : "fx:id=\"rbApptByWeek\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert tgAppointments != null : "fx:id=\"tgAppointments\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
@@ -558,19 +618,29 @@ public class AppointmentsController implements Initializable {
         assert tcCustomerID != null : "fx:id=\"tcCustomerID\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert btnDeleteAppointment != null : "fx:id=\"btnDeleteAppointment\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert lbTableErrorMessage != null : "fx:id=\"lbTableErrorMessage\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert lbApptID != null : "fx:id=\"lbApptID\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert tfAppointmentID != null : "fx:id=\"tfAppointmentID\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert lbContact != null : "fx:id=\"lbContact\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert cbContactPerson != null : "fx:id=\"cbContactPerson\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert lbTitle != null : "fx:id=\"lbTitle\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert tfTitle != null : "fx:id=\"tfTitle\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert lbType != null : "fx:id=\"lbType\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert tfType != null : "fx:id=\"tfType\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert lbLocation != null : "fx:id=\"lbLocation\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert tfLocation != null : "fx:id=\"tfLocation\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert lbCustomerID != null : "fx:id=\"lbCustomerID\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert tfCustomerID != null : "fx:id=\"tfCustomerID\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert lbStart != null : "fx:id=\"lbStart\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert tfStartDT != null : "fx:id=\"tfStartDT\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert lbEnd != null : "fx:id=\"lbEnd\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert tfEndDT != null : "fx:id=\"tfEndDT\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert lbUserID != null : "fx:id=\"lbUserID\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert tfUserID != null : "fx:id=\"tfUserID\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert btnUpdateAppointment != null : "fx:id=\"btnUpdateAppointment\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert btnAddAppointment != null : "fx:id=\"btnAddAppointment\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert btnClearForm != null : "fx:id=\"btnClearForm\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert lbFormErrorMessage != null : "fx:id=\"lbFormErrorMessage\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
+        assert lbDescription != null : "fx:id=\"lbDescription\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
         assert tfDescription != null : "fx:id=\"tfDescription\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
 
     }

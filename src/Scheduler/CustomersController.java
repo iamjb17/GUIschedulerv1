@@ -6,6 +6,7 @@ package Scheduler;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.TreeSet;
@@ -13,7 +14,6 @@ import java.util.TreeSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,15 +23,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
+// Class for handling the Customers scene
 public class CustomersController implements Initializable {
 
     @FXML // ResourceBundle that was given to the FXMLLoader
@@ -40,29 +38,29 @@ public class CustomersController implements Initializable {
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
 
-//    @FXML // fx:id="mnCustomers"
-//    private Menu mnCustomers; // Value injected by FXMLLoader
-
-//    @FXML // fx:id="mnAppointments"
-//    private Menu mnAppointments; // Value injected by FXMLLoader
-
-    @FXML // fx:id="lbAppointments"
-    private Label lbAppointments; // Value injected by FXMLLoader
-
-    @FXML // fx:id="btnAppointmentsLabel"
-    private Button btnAppointmentsLabel; // Value injected by FXMLLoader
+    @FXML // fx:id="lbSignOut"
+    private Label lbSignOut; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnSignOutLabel"
     private Button btnSignOutLabel; // Value injected by FXMLLoader
 
-//    @FXML // fx:id="mnExit"
-//    private Menu mnExit; // Value injected by FXMLLoader
+    @FXML // fx:id="lbReports"
+    private Label lbReports; // Value injected by FXMLLoader
 
-    @FXML // fx:id="lbExit"
-    private Label lbExit; // Value injected by FXMLLoader
+    @FXML // fx:id="btnReports"
+    private Button btnReports; // Value injected by FXMLLoader
+
+    @FXML // fx:id="lbAppts"
+    private Label lbAppts; // Value injected by FXMLLoader
+
+    @FXML // fx:id="btnGoToAppts"
+    private Button btnGoToAppts; // Value injected by FXMLLoader
 
     @FXML // fx:id="lbAppointmentAlert"
     private Label lbAppointmentAlert; // Value injected by FXMLLoader
+
+    @FXML // fx:id="lbCustomerTbl"
+    private Label lbCustomerTbl; // Value injected by FXMLLoader
 
     @FXML // fx:id="tvCustomerTable"
     private TableView<Customers> tvCustomerTable; // Value injected by FXMLLoader
@@ -88,29 +86,50 @@ public class CustomersController implements Initializable {
     @FXML // fx:id="tcPhoneNumber"
     private TableColumn<Customers, String> tcPhoneNumber; // Value injected by FXMLLoader
 
-    @FXML // fx:id="lbErrorMessage"
-    private Label lbErrorMessage; // Value injected by FXMLLoader
+    @FXML // fx:id="lbDeleteMessage"
+    private Label lbDeleteMessage; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnDeleteCustomer"
     private Button btnDeleteCustomer; // Value injected by FXMLLoader
 
+    @FXML // fx:id="lbCustomerID"
+    private Label lbCustomerID; // Value injected by FXMLLoader
+
     @FXML // fx:id="tfCustomerID"
     private TextField tfCustomerID; // Value injected by FXMLLoader
+
+    @FXML // fx:id="lbName"
+    private Label lbName; // Value injected by FXMLLoader
 
     @FXML // fx:id="tfName"
     private TextField tfName; // Value injected by FXMLLoader
 
+    @FXML // fx:id="lbAddress"
+    private Label lbAddress; // Value injected by FXMLLoader
+
     @FXML // fx:id="tfAddress"
     private TextField tfAddress; // Value injected by FXMLLoader
+
+    @FXML // fx:id="lbCountry"
+    private Label lbCountry; // Value injected by FXMLLoader
 
     @FXML // fx:id="cbState"
     private ComboBox<String> cbState; // Value injected by FXMLLoader
 
+    @FXML // fx:id="lbState"
+    private Label lbState; // Value injected by FXMLLoader
+
     @FXML // fx:id="cbCountry"
     private ComboBox<String> cbCountry; // Value injected by FXMLLoader
 
+    @FXML // fx:id="lbPostalCode"
+    private Label lbPostalCode; // Value injected by FXMLLoader
+
     @FXML // fx:id="tfPostalCode"
     private TextField tfPostalCode; // Value injected by FXMLLoader
+
+    @FXML // fx:id="lbPhone"
+    private Label lbPhone; // Value injected by FXMLLoader
 
     @FXML // fx:id="tfPhoneNumber"
     private TextField tfPhoneNumber; // Value injected by FXMLLoader
@@ -124,16 +143,13 @@ public class CustomersController implements Initializable {
     @FXML // fx:id="btnAddCustomer"
     private Button btnAddCustomer; // Value injected by FXMLLoader
 
-    @FXML // fx:id="lbDeleteMessage"
-    private Label lbDeleteMessage; // Value injected by FXMLLoader
-
-    @FXML // fx:id="btnGoToAppts"
-    private Button btnGoToAppts; // Value injected by FXMLLoader
+    @FXML // fx:id="lbErrorMessage"
+    private Label lbErrorMessage; // Value injected by FXMLLoader
 
     // Container for to store and move around form data
     private final HashMap<String, String> formData = new HashMap<>();
 
-
+    // Action handler for signing out
     @FXML
     void onSignOutBtnClicked(ActionEvent event) throws IOException {
         AppHelper.clearSessionData();
@@ -142,7 +158,7 @@ public class CustomersController implements Initializable {
         primaryStage.setScene(new Scene(parent));
     }
 
-    // has the state and country been selected already storage value
+    // has the state and country been selected already storage values
     private boolean stateHasBeenSelected = false;
     private boolean countryHasBeenSelected = false;
 
@@ -158,6 +174,7 @@ public class CustomersController implements Initializable {
         formData.put("postal code", tfPostalCode.getText());
     }
 
+    // return the first division (state) name
     private ObservableList<String> getFirstDivisionNames() {
         ObservableList<String> names = FXCollections.observableArrayList();
         for (FirstDivision state: AppHelper.firstDivisions) {
@@ -166,6 +183,7 @@ public class CustomersController implements Initializable {
         return names;
     }
 
+    // return all/only country names from countries
     private ObservableList<String> getCountryNames() {
         ObservableList<String> names = FXCollections.observableArrayList();
         for (Country country: AppHelper.countries) {
@@ -186,6 +204,7 @@ public class CustomersController implements Initializable {
         cbCountry.getSelectionModel().select(tvCustomerTable.getSelectionModel().getSelectedItem().getCountry());
     }
 
+    // Clear all form data
     private void clearFormData() {
         btnUpdateCustomer.setDisable(true);
         btnAddCustomer.setDisable(false);
@@ -203,9 +222,9 @@ public class CustomersController implements Initializable {
         tfCustomerID.setText(String.valueOf(autoNextGenCustomerID()));
         cbState.setItems(getFirstDivisionNames());
         cbCountry.setItems(getCountryNames());
-
     }
 
+    // get next available customer id number
     private int autoNextGenCustomerID() {
         TreeSet<Integer> temp = new TreeSet<>();
         int curr = 1;
@@ -228,10 +247,35 @@ public class CustomersController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        // Set display text in proper language
+        lbAppts.setText(AppHelper.localeRB.getString("lbAppt"));
+        lbSignOut.setText(AppHelper.localeRB.getString("lbSignOut"));
+        lbCustomerTbl.setText(AppHelper.localeRB.getString("lbCustomerTbl"));
+        tcID.setText(AppHelper.localeRB.getString("ID"));
+        tcName.setText(AppHelper.localeRB.getString("Name"));
+        tcAddress.setText(AppHelper.localeRB.getString("Address"));
+        tcPhoneNumber.setText(AppHelper.localeRB.getString("Phone"));
+        tcPostalCode.setText(AppHelper.localeRB.getString("Postal"));
+        tcCountry.setText(AppHelper.localeRB.getString("Country"));
+        tcState.setText(AppHelper.localeRB.getString("State"));
+        lbCustomerID.setText(AppHelper.localeRB.getString("ID"));
+        lbName.setText(AppHelper.localeRB.getString("Name"));
+        lbPhone.setText(AppHelper.localeRB.getString("Phone"));
+        lbPostalCode.setText(AppHelper.localeRB.getString("Postal"));
+        lbCountry.setText(AppHelper.localeRB.getString("Country"));
+        lbState.setText(AppHelper.localeRB.getString("State"));
+        lbAddress.setText(AppHelper.localeRB.getString("Address"));
+        btnAddCustomer.setText(AppHelper.localeRB.getString("btnAddCustomer"));
+        btnClear.setText(AppHelper.localeRB.getString("btnClear"));
+        btnUpdateCustomer.setText(AppHelper.localeRB.getString("btnUpdateCustomer"));
+        btnDeleteCustomer.setText(AppHelper.localeRB.getString("btnDeleteCustomer"));
+
+
         // temp container for filtered states and countries to leave the original list unchanged
         ObservableList<String> filteredStates = FXCollections.observableArrayList();
         ObservableList<String> filteredCountries = FXCollections.observableArrayList();
 
+        // uncomment to show database structure in console
 //        DBHelper.showAllDB();
 
         // Setup Customers tableview
@@ -243,12 +287,21 @@ public class CustomersController implements Initializable {
         tcPostalCode.setCellValueFactory(new PropertyValueFactory<Customers, String>("postalCode"));
         tcPhoneNumber.setCellValueFactory(new PropertyValueFactory<Customers, String>("phone"));
 
-        // Get all customers from db and fill the table view with data from database
-        DBHelper.setInitDataFromDB();
-        if (!AppHelper.customers.isEmpty()) {
-            tvCustomerTable.setItems(AppHelper.customers);
+        // Get all customers from db and fill the table view with data from database if not done already
+        if (AppHelper.customers.isEmpty()) {
+            DBHelper.setInitDataFromDB();
         }
 
+        // set customer table view with proper data
+        tvCustomerTable.setItems(AppHelper.customers);
+
+        // Check for appointments that is within 15 min of login.
+        AppHelper.apptWithinTimeFrame();
+        // Set Alert if appointment is within 15 min
+        if (AppHelper.apptIDSoon != -1) {
+            lbAppointmentAlert.setText(AppHelper.localeRB.getString("altAppt") + AppHelper.apptIDSoon + " " +
+                    AppHelper.localeRB.getString("altStartingSoon") + AppHelper.apptTDSoon.getTime().toString() + "!");
+        }
 
         // Fill state and country comboboxes with data originally from database
         cbState.setItems(getFirstDivisionNames());
@@ -257,18 +310,7 @@ public class CustomersController implements Initializable {
         // Add autogen ID to form on add
         tfCustomerID.setText(String.valueOf(autoNextGenCustomerID()));
 
-//        btnAppointmentsLabel.setOnAction(event -> {
-//            Parent parent = null;
-//            try {
-//                parent = FXMLLoader.load(getClass().getResource("../Resources/AppointmentsScene.fxml"));
-//            } catch (IOException exception) {
-//                exception.printStackTrace();
-//            }
-//            Stage primaryStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-//            primaryStage.setScene(new Scene(parent));
-//
-//        });
-
+        // Lamda expression changing to appointments scene
         btnGoToAppts.setOnAction(event -> {
             Parent parent = null;
             try {
@@ -310,6 +352,7 @@ public class CustomersController implements Initializable {
             countryHasBeenSelected = true;
         });
 
+        // Once customer table clicked attempt to add clicked items data to form
         tvCustomerTable.setOnMouseClicked(event -> {
             addDataToForm();
             btnAddCustomer.setDisable(true);
@@ -318,13 +361,11 @@ public class CustomersController implements Initializable {
             lbDeleteMessage.setVisible(false);
         });
 
+        // Once add customer button clicked add the form data to storage map, check for correctness, attempt to add to database
         btnAddCustomer.setOnAction(event -> {
             addFormDataToMap();
-            System.out.println(formData.toString());
             String statusMessage = AppHelper.checkFormCorrectness(formData);
             if (statusMessage.equals("correct")) {
-//                DBHelper.getConnection();
-//                AppHelper.createCustomerFromFormData(formData);
                 DBHelper.addCustomer(AppHelper.createCustomerFromFormData(formData));
                 AppHelper.customers.add(AppHelper.createCustomerFromFormData(formData));
                 clearFormData();
@@ -334,31 +375,32 @@ public class CustomersController implements Initializable {
             }
         });
 
+        // clear form data button on action
         btnClear.setOnAction(event -> {
             clearFormData();
         });
 
+        // Once delete button clicked, check if customer was selected and attempt to delete from database
         btnDeleteCustomer.setOnAction(event -> {
             if (tvCustomerTable.getSelectionModel().isEmpty()) {
-                lbDeleteMessage.setText("No Customer Selected");
+                lbDeleteMessage.setText(AppHelper.localeRB.getString("erNoSelection"));
                 lbDeleteMessage.setVisible(true);
             } else {
                 if (DBHelper.deleteCustomer(tvCustomerTable.getSelectionModel().getSelectedItem().getCustomerID())) {
                     AppHelper.customers.remove(tvCustomerTable.getSelectionModel().getSelectedItem());
-                    lbDeleteMessage.setText("Item was deleted successfully");
+                    lbDeleteMessage.setText(tvCustomerTable.getSelectionModel().getSelectedItem().getName() +" "+ AppHelper.localeRB.getString("erDeleteSuc"));
                     lbDeleteMessage.setVisible(true);
                     clearFormData();
                 } else {
-                    lbDeleteMessage.setText("Unable to delete. Item must have appointment associated with it. Delete appointment first.");
+                    lbDeleteMessage.setText(AppHelper.localeRB.getString("erUnableToDelete"));
                     lbDeleteMessage.setVisible(true);
                 }
             }
-
         });
 
+        // Update the customer on action, once fields checked for correctness attempt to update the database
         btnUpdateCustomer.setOnAction(event -> {
             addFormDataToMap();
-            System.out.println(formData.toString());
             String statusMessage = AppHelper.checkFormCorrectness(formData);
             if (statusMessage.equals("correct")) {
                 DBHelper.updateCustomer(AppHelper.createCustomerFromFormData(formData));
@@ -368,6 +410,19 @@ public class CustomersController implements Initializable {
                 lbErrorMessage.setText(statusMessage);
                 lbErrorMessage.setVisible(true);
             }
+        });
+
+        // Go to reports window and set backWhere variable
+        btnReports.setOnAction(event -> {
+            AppHelper.backWhere = "customer";
+            Parent parent = null;
+            try {
+                parent = FXMLLoader.load(getClass().getResource("../Resources/SummaryReport.fxml"));
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+            Stage primaryStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            primaryStage.setScene(new Scene(parent));
         });
 
         // If any of the the form fields get focused, remove error message
@@ -382,10 +437,14 @@ public class CustomersController implements Initializable {
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        assert lbExit != null : "fx:id=\"lbExit\" was not injected: check your FXML file 'CustomerScene.fxml'.";
+        assert lbSignOut != null : "fx:id=\"lbSignOut\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert btnSignOutLabel != null : "fx:id=\"btnSignOutLabel\" was not injected: check your FXML file 'CustomerScene.fxml'.";
+        assert lbAppts != null : "fx:id=\"lbAppts\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert btnGoToAppts != null : "fx:id=\"btnGoToAppts\" was not injected: check your FXML file 'CustomerScene.fxml'.";
+        assert lbReports != null : "fx:id=\"lbReports\" was not injected: check your FXML file 'CustomerScene.fxml'.";
+        assert btnReports != null : "fx:id=\"btnReports\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert lbAppointmentAlert != null : "fx:id=\"lbAppointmentAlert\" was not injected: check your FXML file 'CustomerScene.fxml'.";
+        assert lbCustomerTbl != null : "fx:id=\"lbCustomerTbl\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert tvCustomerTable != null : "fx:id=\"tvCustomerTable\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert tcID != null : "fx:id=\"tcID\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert tcName != null : "fx:id=\"tcName\" was not injected: check your FXML file 'CustomerScene.fxml'.";
@@ -396,12 +455,19 @@ public class CustomersController implements Initializable {
         assert tcPhoneNumber != null : "fx:id=\"tcPhoneNumber\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert lbDeleteMessage != null : "fx:id=\"lbDeleteMessage\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert btnDeleteCustomer != null : "fx:id=\"btnDeleteCustomer\" was not injected: check your FXML file 'CustomerScene.fxml'.";
+        assert lbCustomerID != null : "fx:id=\"lbCustomerID\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert tfCustomerID != null : "fx:id=\"tfCustomerID\" was not injected: check your FXML file 'CustomerScene.fxml'.";
+        assert lbName != null : "fx:id=\"lbName\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert tfName != null : "fx:id=\"tfName\" was not injected: check your FXML file 'CustomerScene.fxml'.";
+        assert lbAddress != null : "fx:id=\"lbAddress\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert tfAddress != null : "fx:id=\"tfAddress\" was not injected: check your FXML file 'CustomerScene.fxml'.";
+        assert lbCountry != null : "fx:id=\"lbCountry\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert cbCountry != null : "fx:id=\"cbCountry\" was not injected: check your FXML file 'CustomerScene.fxml'.";
+        assert lbState != null : "fx:id=\"lbState\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert cbState != null : "fx:id=\"cbState\" was not injected: check your FXML file 'CustomerScene.fxml'.";
+        assert lbPostalCode != null : "fx:id=\"lbPostalCode\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert tfPostalCode != null : "fx:id=\"tfPostalCode\" was not injected: check your FXML file 'CustomerScene.fxml'.";
+        assert lbPhone != null : "fx:id=\"lbPhone\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert tfPhoneNumber != null : "fx:id=\"tfPhoneNumber\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert btnClear != null : "fx:id=\"btnClear\" was not injected: check your FXML file 'CustomerScene.fxml'.";
         assert btnUpdateCustomer != null : "fx:id=\"btnUpdateCustomer\" was not injected: check your FXML file 'CustomerScene.fxml'.";

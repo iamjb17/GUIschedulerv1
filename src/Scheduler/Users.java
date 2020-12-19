@@ -1,8 +1,12 @@
+/**
+ * @author Jessie Burton
+ */
 package Scheduler;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+// Model class for User
 public class Users {
     private int userID;
     private String userName;
@@ -12,6 +16,7 @@ public class Users {
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
 
+    // Constructor for user model class
     public Users(int userID, String userName, String password, LocalDateTime createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy) {
         this.userID = userID;
         this.userName = userName;
@@ -21,6 +26,10 @@ public class Users {
         this.lastUpdated = lastUpdated;
         this.lastUpdatedBy = lastUpdatedBy;
     }
+
+    /*
+    Getter and setters for private variables from user class
+     */
 
     public int getUserID() {
         return userID;

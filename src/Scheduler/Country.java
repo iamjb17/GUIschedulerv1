@@ -1,7 +1,11 @@
+/**
+ * @author Jessie Burton
+ */
 package Scheduler;
 
 import java.sql.Timestamp;
 
+// Model Class for Country data
 public class Country {
     private int countryID;
     private String countryName;
@@ -10,6 +14,7 @@ public class Country {
     private Timestamp lastUpdated;
     private String lastUpdatedBy;
 
+    // Contructor for Country model class
     public Country(int countryID, String countryName, Timestamp createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy) {
         this.countryID = countryID;
         this.countryName = countryName;
@@ -19,51 +24,19 @@ public class Country {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
+    // return Country ID
     public int getCountryID() {
         return countryID;
     }
 
-    public void setCountryID(int countryID) {
-        this.countryID = countryID;
-    }
-
+    // Return Country Name
     public String getCountryName() {
         return countryName;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
-    }
-
+    // Return created date
     public Timestamp getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Timestamp getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(Timestamp lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
-
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
 }

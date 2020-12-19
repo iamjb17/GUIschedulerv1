@@ -4,9 +4,10 @@ package Scheduler;
  * @author Jessie Burton
  */
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -29,6 +30,12 @@ public class SignInController implements Initializable {
 
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
+
+    @FXML // fx:id="lbUserName"
+    private Label lbUserName; // Value injected by FXMLLoader
+
+    @FXML // fx:id="lbPassword"
+    private Label lbPassword; // Value injected by FXMLLoader
 
     @FXML // fx:id="lbLocation"
     private Label lbLocation; // Value injected by FXMLLoader
@@ -69,22 +76,46 @@ public class SignInController implements Initializable {
                 primaryStage.setScene(new Scene(parent));
                 System.out.println("user signed in");
 
+                createLog(true);
                 formData1.clear();
             } else {
-                lbErrorMessage.setText("User Name And/Or Password Incorrect");
+                createLog(false);
+                lbErrorMessage.setText(AppHelper.localeRB.getString("userAndPasswordError"));
                 lbErrorMessage.setVisible(true);
                 formData1.clear();
             }
         } else {
+            createLog(false);
             lbErrorMessage.setText(message1);
             lbErrorMessage.setVisible(true);
             formData1.clear();
         }
     }
 
+    // Create log String
+    private void createLog(boolean successful) throws IOException {
+        StringBuilder loginActivityStr = new StringBuilder();
+
+        loginActivityStr.append("User Name: " +tfUserName.getText() + " ");
+        Instant now = Instant.now();
+        loginActivityStr.append(now.toString() + " ");
+        loginActivityStr.append("Login Attempt Successful: " + successful + "," + System.lineSeparator());
+
+        FileWriter fileWriter = new FileWriter("login_activity", true);
+        fileWriter.append(loginActivityStr.toString());
+        fileWriter.close();
+    }
+
     // Override Initialize method to init state of the scene
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Set the proper language text
+        lbUserName.setText(AppHelper.localeRB.getString("userName"));
+        lbPassword.setText(AppHelper.localeRB.getString("signInPassword"));
+        tfUserName.setPromptText(AppHelper.localeRB.getString("tfUserName"));
+        tfPassword.setPromptText(AppHelper.localeRB.getString("tfPassword"));
+        btnSignIn.setText(AppHelper.localeRB.getString("btnSignIn"));
+
         // Get and set the current users location
         lbLocation.setText(AppHelper.getCurrentLocal());
 
@@ -92,19 +123,21 @@ public class SignInController implements Initializable {
         tfUserName.setOnMouseClicked(event -> {
             lbErrorMessage.setVisible(false);
         });
+
+        // Lamda Expressions for turning off error message once user begins to retry inputting data
         tfPassword.setOnMouseClicked(event -> {
             lbErrorMessage.setVisible(false);
         });
 
     }
 
-
-
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert lbLocation != null : "fx:id=\"lbLocation\" was not injected: check your FXML file 'SignInForm.fxml'.";
+        assert lbUserName != null : "fx:id=\"lbUserName\" was not injected: check your FXML file 'SignInForm.fxml'.";
         assert tfUserName != null : "fx:id=\"tfUserName\" was not injected: check your FXML file 'SignInForm.fxml'.";
-        assert tfPassword != null : "fx:id=\"tfPasswrod\" was not injected: check your FXML file 'SignInForm.fxml'.";
+        assert lbPassword != null : "fx:id=\"lbPassword\" was not injected: check your FXML file 'SignInForm.fxml'.";
+        assert tfPassword != null : "fx:id=\"tfPassword\" was not injected: check your FXML file 'SignInForm.fxml'.";
         assert lbErrorMessage != null : "fx:id=\"lbErrorMessage\" was not injected: check your FXML file 'SignInForm.fxml'.";
         assert btnSignIn != null : "fx:id=\"btnSignIn\" was not injected: check your FXML file 'SignInForm.fxml'.";
 

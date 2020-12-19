@@ -1,7 +1,11 @@
+/**
+ * @author Jessie Burton
+ */
 package Scheduler;
 
 import java.sql.Timestamp;
 
+// Model Class for Customer data
 public class Customers {
     private int customerID;
     private String name;
@@ -16,6 +20,7 @@ public class Customers {
     private String state;
     private String country;
 
+    // Constructor for customer model class
     public Customers(int customerID, String name, String address, String postalCode, String phone,
                      Timestamp createdDate, String createdBy, Timestamp lastUpdated, String lastUpdatedBy, int divisionID,
                      String state, String country) {
@@ -33,99 +38,89 @@ public class Customers {
         this.country = country;
     }
 
+    // return state name of the customer
     public String getState() {
         return state;
     }
 
+    // set state name of the customer
     public void setState(String state) {
         this.state = state;
     }
 
+    // return country of the customer
     public String getCountry() {
         return country;
     }
 
+    // set country of the customer
     public void setCountry(String country) {
         this.country = country;
     }
 
+    // return customer ID
     public int getCustomerID() {
         return customerID;
     }
 
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
-    }
-
+    // return customer name
     public String getName() {
         return name;
     }
 
+    // set customer name
     public void setName(String name) {
         this.name = name;
     }
 
+    // return address of customer
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
+    // return postal code of customer
     public String getPostalCode() {
         return postalCode;
     }
 
+    // set postal code
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
+    // return phone number of customer
     public String getPhone() {
         return phone;
     }
 
+    // set phone number of customer
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
+    // return create date
     public Timestamp getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
+    // return lasted updated date
     public Timestamp getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(Timestamp lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
-
+    // return last updated by name
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
     }
 
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
+    // return division ID of custoemr
     public int getDivisionID() {
         return divisionID;
     }
 
-    public void setDivisionID(int divisionID) {
-        this.divisionID = divisionID;
-    }
-
+    // return created by name
     public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
 }

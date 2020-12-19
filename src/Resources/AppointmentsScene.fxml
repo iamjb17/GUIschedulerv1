@@ -26,14 +26,20 @@
          <buttons>
             <StackPane prefHeight="150.0" prefWidth="75.0">
                <children>
-                  <Label text="Sign Out" textFill="#175f96" underline="true" />
+                  <Label fx:id="lbSignOut" text="Sign Out" textFill="#175f96" underline="true" />
                   <Button fx:id="btnSignOut" mnemonicParsing="false" opacity="0.0" text="Button" />
                </children>
             </StackPane>
             <StackPane prefHeight="150.0" prefWidth="75.0">
                <children>
-                  <Label text="Customers" textFill="#175f96" underline="true" />
+                  <Label fx:id="lbCustomers" text="Customers" textFill="#175f96" underline="true" />
                   <Button fx:id="btnCustomers" mnemonicParsing="false" opacity="0.0" text="Button" />
+               </children>
+            </StackPane>
+            <StackPane layoutX="650.0" layoutY="10.0" prefHeight="150.0" prefWidth="75.0">
+               <children>
+                  <Label fx:id="lbReports" text="Reports" textFill="#175f96" underline="true" />
+                  <Button fx:id="btnReports" mnemonicParsing="false" opacity="0.0" text="Button" />
                </children>
             </StackPane>
          </buttons>
@@ -46,7 +52,7 @@
                      <children>
                         <VBox layoutX="-1.0" layoutY="-1.0" prefHeight="328.0" prefWidth="798.0">
                            <children>
-                              <Label fx:id="lbAppointmentAlert" alignment="CENTER" prefHeight="17.0" prefWidth="800.0" text="Appointment Alert" textAlignment="CENTER" textFill="#1cbc1c" />
+                              <Label fx:id="lbAppointmentAlert" alignment="CENTER" prefHeight="17.0" prefWidth="800.0" text="No Appointments Scheduled Within The Next 15 Min." textAlignment="CENTER" textFill="#1cbc1c" />
                               <HBox prefHeight="43.0" prefWidth="793.0" spacing="5.0">
                                  <children>
                                     <RadioButton fx:id="rbApptByWeek" mnemonicParsing="false" selected="true" text="Appointments By Week">
@@ -70,11 +76,8 @@
                                     <TableColumn fx:id="tcType" text="Type" />
                                     <TableColumn fx:id="tcStartDT" prefWidth="106.0" text="Start Date &amp; Time" />
                                     <TableColumn fx:id="tcEndDT" prefWidth="107.0" text="End Date &amp; Time" />
-                                    <TableColumn fx:id="tcCustomerID" prefWidth="76.0" text="Customer ID" />
+                                    <TableColumn fx:id="tcCustomerID" prefWidth="84.0" text="Customer ID" />
                                 </columns>
-                                 <padding>
-                                    <Insets left="5.0" right="5.0" />
-                                 </padding>
                               </TableView>
                               <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="95.0" prefWidth="800.0" spacing="20.0">
                                  <children>
@@ -106,67 +109,67 @@
                            <children>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <Label text="Appointment ID" />
+                                    <Label fx:id="lbApptID" text="Appointment ID" />
                                     <TextField fx:id="tfAppointmentID" disable="true" />
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                                  <children>
-                                    <Label text="Contact Person" />
+                                    <Label fx:id="lbContact" text="Contact Person" />
                                     <ComboBox fx:id="cbContactPerson" prefHeight="25.0" prefWidth="230.0" />
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                                  <children>
-                                    <Label text="Title" />
+                                    <Label fx:id="lbTitle" text="Title" />
                                     <TextField fx:id="tfTitle" />
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <children>
-                                    <Label text="Type" />
+                                    <Label fx:id="lbType" text="Type" />
                                     <TextField fx:id="tfType" />
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
                                  <children>
-                                    <Label text="Location" />
+                                    <Label fx:id="lbLocation" text="Location" />
                                     <TextField fx:id="tfLocation" />
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                  <children>
-                                    <Label text="Customer ID" />
+                                    <Label fx:id="lbCustomerID" text="Customer ID" />
                                     <TextField fx:id="tfCustomerID" prefHeight="25.0" prefWidth="257.0" />
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
                                  <children>
-                                    <Label text="Start Date &amp; Time" />
+                                    <Label fx:id="lbStart" text="Start Date &amp; Time (yyyy-mm-dd hh:mm:ss a)" />
                                     <TextField fx:id="tfStartDT" />
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <children>
-                                    <Label text="End Date &amp; Time" />
+                                    <Label fx:id="lbEnd" text="End Date &amp; Time (yyyy-mm-dd hh:mm:ss a)" />
                                     <TextField fx:id="tfEndDT" />
                                  </children>
                               </VBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                  <children>
-                                    <Label text="User ID" />
+                                    <Label fx:id="lbUserID" text="User ID" />
                                     <TextField fx:id="tfUserID" />
                                  </children>
                               </VBox>
-                              <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="8.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                              <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="1.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                  <children>
-                                    <Button fx:id="btnUpdateAppointment" disable="true" mnemonicParsing="false" text="Update Appointment" />
-                                    <Button fx:id="btnAddAppointment" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Add Appointment" />
+                                    <Button fx:id="btnUpdateAppointment" disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="133.0" text="Update Appointment" />
+                                    <Button fx:id="btnAddAppointment" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="Add Appointment" />
                                  </children>
                               </HBox>
                               <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="34.0" prefWidth="259.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <children>
-                                    <Button fx:id="btnClearForm" mnemonicParsing="false" text="Clear" />
+                                    <Button fx:id="btnClearForm" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="Clear" />
                                     <Label fx:id="lbFormErrorMessage" alignment="TOP_LEFT" prefHeight="51.0" prefWidth="208.0" text="Error Message" textFill="RED" visible="false" wrapText="true">
                                        <font>
                                           <Font size="11.0" />
@@ -176,7 +179,7 @@
                               </HBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="3">
                                  <children>
-                                    <Label text="Description" />
+                                    <Label fx:id="lbDescription" text="Description" />
                                     <TextField fx:id="tfDescription" />
                                  </children>
                               </VBox>

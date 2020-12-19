@@ -1,7 +1,11 @@
+/**
+ * @author Jessie Burton
+ */
 package Scheduler;
 
 import java.sql.Timestamp;
 
+// Model class for first division data
 public class FirstDivision {
     private int divisionID;
     private String divisionName;
@@ -11,6 +15,7 @@ public class FirstDivision {
     private String lastUpdatedBy;
     private int countryID;
 
+    // Constructor for first division model class
     public FirstDivision(int divisionID, String divisionName, Timestamp createdDate, String createdBy,
                          Timestamp lastUpdated, String lastUpdatedBy, int countryID) {
         this.divisionID = divisionID;
@@ -22,60 +27,24 @@ public class FirstDivision {
         this.countryID = countryID;
     }
 
+    // return division ID
     public int getDivisionID() {
         return divisionID;
     }
 
-    public void setDivisionID(int divisionID) {
-        this.divisionID = divisionID;
-    }
-
+    // return division name
     public String getDivisionName() {
         return divisionName;
     }
 
-    public void setDivisionName(String divisionName) {
-        this.divisionName = divisionName;
-    }
-
+    // return division created date
     public Timestamp getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Timestamp getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(Timestamp lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
-
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
+    // return country ID of division
     public int getCountryID() {
         return countryID;
-    }
-
-    public void setCountryID(int countryID) {
-        this.countryID = countryID;
     }
 
 }
