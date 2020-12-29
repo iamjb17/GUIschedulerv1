@@ -22,40 +22,75 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-// Controller for the sign in form
+/**
+ * Controller for the sign in scene
+ */
 public class SignInController implements Initializable {
 
+    /**
+     * FXML ResourceBundle that was given to the FXMLLoader
+     */
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
 
+    /**
+     * FXML URL location of the FXML file that was given to the FXMLLoader
+     */
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
 
+    /**
+     * FXML value for the user name label
+     */
     @FXML // fx:id="lbUserName"
     private Label lbUserName; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the password label
+     */
     @FXML // fx:id="lbPassword"
     private Label lbPassword; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the location label
+     */
     @FXML // fx:id="lbLocation"
     private Label lbLocation; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the user name text field
+     */
     @FXML // fx:id="tfUserName"
     private TextField tfUserName; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the password text field
+     */
     @FXML // fx:id="tfPassword"
     private TextField tfPassword; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the error message label
+     */
     @FXML // fx:id="lbErrorMessage"
     private Label lbErrorMessage; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the sign in button
+     */
     @FXML // fx:id="btnSignIn"
     private Button btnSignIn; // Value injected by FXMLLoader
 
-    // Container to store form data
+    /**
+     * Container to store form data
+     */
     private final HashMap<String, String> formData1 = new HashMap<>();
 
-    // Action even handler for the Sign In button
+    /**
+     * Action even handler for the Sign In button
+     * @param event the click event of the sign in button
+     * @throws IOException throws IO exception caused by calling a method that tries to write to a file
+     */
     @FXML
     void onClick(ActionEvent event) throws IOException{
 
@@ -92,7 +127,11 @@ public class SignInController implements Initializable {
         }
     }
 
-    // Create log String
+    /**
+     * Create log String
+     * @param successful boolean value to note if the user was successful in logging in
+     * @throws IOException throws IO exception caused by trying to write to a file
+     */
     private void createLog(boolean successful) throws IOException {
         StringBuilder loginActivityStr = new StringBuilder();
 
@@ -106,7 +145,11 @@ public class SignInController implements Initializable {
         fileWriter.close();
     }
 
-    // Override Initialize method to init state of the scene
+    /**
+     * Override Initialize method to init state of the scene
+     * @param url the fxml of this scene
+     * @param resourceBundle used to get the fxml file
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Set the proper language text
@@ -119,19 +162,22 @@ public class SignInController implements Initializable {
         // Get and set the current users location
         lbLocation.setText(AppHelper.getCurrentLocal());
 
-        // Lamda Expressions for turning off error message once user begins to retry inputting data
+        // Lambda Expressions for turning off error message once user begins to retry inputting data
         tfUserName.setOnMouseClicked(event -> {
             lbErrorMessage.setVisible(false);
         });
 
-        // Lamda Expressions for turning off error message once user begins to retry inputting data
+        // Lambda Expressions for turning off error message once user begins to retry inputting data
         tfPassword.setOnMouseClicked(event -> {
             lbErrorMessage.setVisible(false);
         });
 
     }
 
-    @FXML // This method is called by the FXMLLoader when initialization is complete
+    /**
+     * FXML This method is called by the FXMLLoader when initialization is complete
+     */
+    @FXML
     void initialize() {
         assert lbLocation != null : "fx:id=\"lbLocation\" was not injected: check your FXML file 'SignInForm.fxml'.";
         assert lbUserName != null : "fx:id=\"lbUserName\" was not injected: check your FXML file 'SignInForm.fxml'.";

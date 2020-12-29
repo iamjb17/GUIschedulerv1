@@ -10,10 +10,14 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-// Class to manage data base actions throughout application
+/**
+ * Class to manage data base actions throughout application
+ */
 public class DBHelper {
 
-    // Unused model method for connecting to the database
+    /**
+     * model method for connecting to the database
+     */
     public static void getConnection() {
         ResourceBundle reader = ResourceBundle.getBundle("Resources/dbconfig");
         try (Connection connection = DriverManager.getConnection(reader.getString("db.url"),
@@ -26,7 +30,11 @@ public class DBHelper {
         }
     }
 
-    // OAuth user to the application
+    /**
+     * OAuth user to the application and data base
+     * @param data hash map containing user name and password
+     * @return boolean value representing if the user dat was correct and the user can connect/continue
+     */
     public static boolean signInUser(HashMap<String, String> data) {
         ResourceBundle reader = ResourceBundle.getBundle("Resources/dbconfig");
         try (Connection connection = DriverManager.getConnection(reader.getString("db.url"),
@@ -54,7 +62,10 @@ public class DBHelper {
         return false;
     }
 
-    // Unused method to print out the entire database structure
+    /**
+     * method to print out the entire database structure
+     * @return returns if the database has a structure to show
+     */
     public static boolean showAllDB() {
         ResourceBundle reader = ResourceBundle.getBundle("Resources/dbconfig");
         try (Connection connection = DriverManager.getConnection(reader.getString("db.url"),
@@ -84,7 +95,9 @@ public class DBHelper {
         return false;
     }
 
-    // Get the initial customer, appointments, state, contacts, and countries data for use in the app.
+    /**
+     * Get the initial customer, appointments, state, contacts, and countries data for use in the app.
+     */
     public static void setInitDataFromDB() {
         ResourceBundle reader = ResourceBundle.getBundle("Resources/dbconfig");
         try (Connection connection = DriverManager.getConnection(reader.getString("db.url"),
@@ -234,7 +247,10 @@ public class DBHelper {
         }
     }
 
-    // Add customer to database
+    /**
+     * Add customer to database
+     * @param customer data to attempt to add to database
+     */
     public static void addCustomer(Customers customer) {
         ResourceBundle reader = ResourceBundle.getBundle("Resources/dbconfig");
         try (Connection connection = DriverManager.getConnection(reader.getString("db.url"),
@@ -261,7 +277,10 @@ public class DBHelper {
         }
     }
 
-    // Update customer in the database
+    /**
+     * Update customer in the database
+     * @param customer the new customer data to update within the database
+     */
     public static void updateCustomer(Customers customer) {
         ResourceBundle reader = ResourceBundle.getBundle("Resources/dbconfig");
         try (Connection connection = DriverManager.getConnection(reader.getString("db.url"),
@@ -286,7 +305,11 @@ public class DBHelper {
         }
     }
 
-    // delete customer from database
+    /**
+     * delete customer from database
+     * @param customerID the ID used to filter the database
+     * @return boolean value representing if the deletion was successful
+     */
     public static boolean deleteCustomer(int customerID) {
         ResourceBundle reader = ResourceBundle.getBundle("Resources/dbconfig");
         try (Connection connection = DriverManager.getConnection(reader.getString("db.url"),
@@ -315,7 +338,9 @@ public class DBHelper {
         }
     }
 
-    // get all appointment data
+    /**
+     * get all appointment data
+     */
     public static void getAllAppointments() {
         ResourceBundle reader = ResourceBundle.getBundle("Resources/dbconfig");
         try (Connection connection = DriverManager.getConnection(reader.getString("db.url"),
@@ -326,24 +351,28 @@ public class DBHelper {
             // SQL for getting contact name from specified appointment
             String contactSql = "SELECT Contact_Name FROM contacts WHERE contact_ID=?";
 
-            String apptByWeekSql = "SELECT * FROM appointments ORDER BY WEEK(Start)";
-            String apptByMonthSql = "SELECT * FROM appointments ORDER BY Month(Start)";
-            PreparedStatement byWeekPS = connection.prepareStatement(apptByWeekSql);
-            PreparedStatement byMonthPS = connection.prepareStatement(apptByMonthSql);
+            String allAppts = "SELECT * FROM appointments";
+            PreparedStatement allApptsPS = connection.prepareStatement(allAppts);
+//            String apptByWeekSql = "SELECT * FROM appointments ORDER BY WEEK(Start)";
+//            String apptByMonthSql = "SELECT * FROM appointments ORDER BY Month(Start)";
+//            PreparedStatement byWeekPS = connection.prepareStatement(apptByWeekSql);
+//            PreparedStatement byMonthPS = connection.prepareStatement(apptByMonthSql);
 
-            ResultSet rsByWeek = byWeekPS.executeQuery();
-            ResultSet rsByMonth = byMonthPS.executeQuery();
+            ResultSet allApptsRS = allApptsPS.executeQuery();
+//            ResultSet rsByWeek = byWeekPS.executeQuery();
+//            ResultSet rsByMonth = byMonthPS.executeQuery();
 
             // Clear the list to reset the values
-            AppHelper.apptsByMonth.clear();
-            AppHelper.apptsByWeek.clear();
+            AppHelper.appointments.clear();
+//            AppHelper.apptsByMonth.clear();
+//            AppHelper.apptsByWeek.clear();
 
-            while(rsByWeek.next()) {
+            while(allApptsRS.next()) {
                 ObservableList<Object> row = FXCollections.observableArrayList();
                 //Iterate Column
                 for(int i = 1; i <= 14; i++){
                     // Add data to observable array list for easier use
-                    row.add(rsByWeek.getObject(i));
+                    row.add(allApptsRS.getObject(i));
                 }
 
                 PreparedStatement contactSqlPS = connection.prepareStatement(contactSql);
@@ -360,33 +389,33 @@ public class DBHelper {
                         AppHelper.convertTimeToLocal(AppHelper.convertTSToCalendar((Timestamp) row.get(6))), (Timestamp)row.get(7), (String)row.get(8),
                         (Timestamp) row.get(9), (String)row.get(10), (int)row.get(11), (int)row.get(12),
                         (int)row.get(13), contactName);
-                AppHelper.apptsByWeek.add(appointments);
+                AppHelper.appointments.add(appointments);
             }
 
-            while(rsByMonth.next()) {
-                ObservableList<Object> row = FXCollections.observableArrayList();
-                //Iterate Column
-                for(int i = 1; i <= 14; i++){
-                    // Add data to observable array list for easier use
-                    row.add(rsByMonth.getObject(i));
-                }
-
-                PreparedStatement contactSqlPS = connection.prepareStatement(contactSql);
-                contactSqlPS.setInt(1, (int)row.get(13));
-
-                String contactName = "";
-
-                ResultSet resultSet = contactSqlPS.executeQuery();
-                resultSet.next();
-                contactName = resultSet.getString(1);
-
-                Appointments appointments = new Appointments((int)row.get(0), (String)row.get(1),
-                        (String) row.get(2), (String)row.get(3), (String)row.get(4),AppHelper.convertTimeToLocal(AppHelper.convertTSToCalendar((Timestamp) row.get(5))),
-                        AppHelper.convertTimeToLocal(AppHelper.convertTSToCalendar((Timestamp) row.get(6))), (Timestamp) row.get(7), (String)row.get(8),
-                        (Timestamp) row.get(9), (String)row.get(10), (int)row.get(11), (int)row.get(12),
-                        (int)row.get(13), contactName);
-                AppHelper.apptsByMonth.add(appointments);
-            }
+//            while(rsByMonth.next()) {
+//                ObservableList<Object> row = FXCollections.observableArrayList();
+//                //Iterate Column
+//                for(int i = 1; i <= 14; i++){
+//                    // Add data to observable array list for easier use
+//                    row.add(rsByMonth.getObject(i));
+//                }
+//
+//                PreparedStatement contactSqlPS = connection.prepareStatement(contactSql);
+//                contactSqlPS.setInt(1, (int)row.get(13));
+//
+//                String contactName = "";
+//
+//                ResultSet resultSet = contactSqlPS.executeQuery();
+//                resultSet.next();
+//                contactName = resultSet.getString(1);
+//
+//                Appointments appointments = new Appointments((int)row.get(0), (String)row.get(1),
+//                        (String) row.get(2), (String)row.get(3), (String)row.get(4),AppHelper.convertTimeToLocal(AppHelper.convertTSToCalendar((Timestamp) row.get(5))),
+//                        AppHelper.convertTimeToLocal(AppHelper.convertTSToCalendar((Timestamp) row.get(6))), (Timestamp) row.get(7), (String)row.get(8),
+//                        (Timestamp) row.get(9), (String)row.get(10), (int)row.get(11), (int)row.get(12),
+//                        (int)row.get(13), contactName);
+//                AppHelper.apptsByMonth.add(appointments);
+//            }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -394,7 +423,10 @@ public class DBHelper {
 
     }
 
-    // add appointment to database
+    /**
+     * add appointment to database
+     * @param appointment the appointment data to add to the database
+     */
     public static void addAppointment(Appointments appointment) {
         ResourceBundle reader = ResourceBundle.getBundle("Resources/dbconfig");
         try (Connection connection = DriverManager.getConnection(reader.getString("db.url"),
@@ -409,7 +441,7 @@ public class DBHelper {
             preparedStatement.setString(4, appointment.getLocation());
             preparedStatement.setString(5, appointment.getType());
             preparedStatement.setTimestamp(6, new Timestamp(AppHelper.convertTimeBackToUTC(appointment.getStart()).getTimeInMillis()),AppHelper.convertTimeBackToUTC(appointment.getStart()));
-            preparedStatement.setTimestamp(7, new Timestamp(AppHelper.convertTimeBackToUTC(appointment.getStart()).getTimeInMillis()),AppHelper.convertTimeBackToUTC(appointment.getEnd()));
+            preparedStatement.setTimestamp(7, new Timestamp(AppHelper.convertTimeBackToUTC(appointment.getEnd()).getTimeInMillis()),AppHelper.convertTimeBackToUTC(appointment.getEnd()));
             preparedStatement.setTimestamp(8, appointment.getCreatedDate());
             preparedStatement.setString(9, appointment.getCreatedBy());
             preparedStatement.setTimestamp(10, appointment.getLastUpdated());
@@ -425,7 +457,10 @@ public class DBHelper {
         }
     }
 
-    // update appointment
+    /**
+     * update all appointment data selecting by appointment ID method
+     * @param appointment appointment data to be updated
+     */
     public static void updateAppointment(Appointments appointment) {
         ResourceBundle reader = ResourceBundle.getBundle("Resources/dbconfig");
         try (Connection connection = DriverManager.getConnection(reader.getString("db.url"),
@@ -439,7 +474,7 @@ public class DBHelper {
             preparedStatement.setString(4, appointment.getLocation());
             preparedStatement.setString(5, appointment.getType());
             preparedStatement.setTimestamp(6, new Timestamp(AppHelper.convertTimeBackToUTC(appointment.getStart()).getTimeInMillis()),AppHelper.convertTimeBackToUTC(appointment.getStart()));
-            preparedStatement.setTimestamp(7, new Timestamp(AppHelper.convertTimeBackToUTC(appointment.getStart()).getTimeInMillis()),AppHelper.convertTimeBackToUTC(appointment.getEnd()));
+            preparedStatement.setTimestamp(7, new Timestamp(AppHelper.convertTimeBackToUTC(appointment.getEnd()).getTimeInMillis()),AppHelper.convertTimeBackToUTC(appointment.getEnd()));
             preparedStatement.setTimestamp(8, appointment.getCreatedDate());
             preparedStatement.setString(9, appointment.getCreatedBy());
             preparedStatement.setTimestamp(10, appointment.getLastUpdated());
@@ -455,7 +490,11 @@ public class DBHelper {
         }
     }
 
-    // delete appointment by given id
+    /**
+     * delete appointment by given id
+     * @param appointmentID the filter variable to find the result with
+     * @return boolean value representing if the appointment was successfully deleted
+     */
     public static boolean deleteAppointment(int appointmentID) {
         ResourceBundle reader = ResourceBundle.getBundle("Resources/dbconfig");
         try (Connection connection = DriverManager.getConnection(reader.getString("db.url"),
@@ -476,7 +515,9 @@ public class DBHelper {
         return false;
     }
 
-    // return customer and their scheduled appointments
+    /**
+     * Adds data to the AppHelper.contactSched container with customer data and their scheduled appointments
+     */
     public static void getCustomerSched() {
         ResourceBundle reader = ResourceBundle.getBundle("Resources/dbconfig");
         try (Connection connection = DriverManager.getConnection(reader.getString("db.url"),
@@ -484,6 +525,7 @@ public class DBHelper {
 
             System.out.println("connection successful");
 
+            AppHelper.contactSched.clear();
             String sqlStr = "SELECT Appointment_ID, Title, Type, Description, Start, End, Customer_ID, Contact_ID FROM appointments WHERE Contact_ID=?";
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStr);
 

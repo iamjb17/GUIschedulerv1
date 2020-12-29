@@ -29,127 +29,249 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-// Class for handling the Customers scene
+/**
+ * Class for handling the Customers scene functionality and data
+ */
 public class CustomersController implements Initializable {
 
+    /**
+     * FXML ResourceBundle that was given to the FXMLLoader
+     */
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
 
+    /**
+     * FXML URL location of the FXML file that was given to the FXMLLoader
+     */
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
 
+    /**
+     * FXML field for the sign out label
+     */
     @FXML // fx:id="lbSignOut"
     private Label lbSignOut; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the sign out button
+     */
     @FXML // fx:id="btnSignOutLabel"
     private Button btnSignOutLabel; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the reports label
+     */
     @FXML // fx:id="lbReports"
     private Label lbReports; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the button to go to the reports scene
+     */
     @FXML // fx:id="btnReports"
     private Button btnReports; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the appointments label
+     */
     @FXML // fx:id="lbAppts"
     private Label lbAppts; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the button to go to the appointments scene
+     */
     @FXML // fx:id="btnGoToAppts"
     private Button btnGoToAppts; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the appointments alert label
+     */
     @FXML // fx:id="lbAppointmentAlert"
     private Label lbAppointmentAlert; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the customer table label
+     */
     @FXML // fx:id="lbCustomerTbl"
     private Label lbCustomerTbl; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the customer table biew
+     */
     @FXML // fx:id="tvCustomerTable"
     private TableView<Customers> tvCustomerTable; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the ID column of the customer table view
+     */
     @FXML // fx:id="tcID"
     private TableColumn<Customers, Integer> tcID; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the name column of the customer table view
+     */
     @FXML // fx:id="tcName"
     private TableColumn<Customers, String> tcName; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the address column of the customer table view
+     */
     @FXML // fx:id="tcAddress"
     private TableColumn<Customers, String> tcAddress; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the state column of the customer table view
+     */
     @FXML // fx:id="tcState"
     private TableColumn<Customers, String> tcState; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the country column of the customer table view
+     */
     @FXML // fx:id="tcCountry"
     private TableColumn<Customers, String> tcCountry; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the postal code column of the customer table view
+     */
     @FXML // fx:id="tcPostalCode"
     private TableColumn<Customers, String> tcPostalCode; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the phone number column of the customer table view
+     */
     @FXML // fx:id="tcPhoneNumber"
     private TableColumn<Customers, String> tcPhoneNumber; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the customer table view error messages
+     */
     @FXML // fx:id="lbDeleteMessage"
     private Label lbDeleteMessage; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the delete customer button
+     */
     @FXML // fx:id="btnDeleteCustomer"
     private Button btnDeleteCustomer; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form label customer ID
+     */
     @FXML // fx:id="lbCustomerID"
     private Label lbCustomerID; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form text field customer ID
+     */
     @FXML // fx:id="tfCustomerID"
     private TextField tfCustomerID; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form label customer name
+     */
     @FXML // fx:id="lbName"
     private Label lbName; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form text field customer name
+     */
     @FXML // fx:id="tfName"
     private TextField tfName; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form label customer address
+     */
     @FXML // fx:id="lbAddress"
     private Label lbAddress; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form text field customer address
+     */
     @FXML // fx:id="tfAddress"
     private TextField tfAddress; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form label customer country
+     */
     @FXML // fx:id="lbCountry"
     private Label lbCountry; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form combo box customer state
+     */
     @FXML // fx:id="cbState"
     private ComboBox<String> cbState; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form label customer state
+     */
     @FXML // fx:id="lbState"
     private Label lbState; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form combo box customer country
+     */
     @FXML // fx:id="cbCountry"
     private ComboBox<String> cbCountry; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form label customer postal code
+     */
     @FXML // fx:id="lbPostalCode"
     private Label lbPostalCode; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form text field customer postal code
+     */
     @FXML // fx:id="tfPostalCode"
     private TextField tfPostalCode; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form label customer phone number
+     */
     @FXML // fx:id="lbPhone"
     private Label lbPhone; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form text field customer phone number
+     */
     @FXML // fx:id="tfPhoneNumber"
     private TextField tfPhoneNumber; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the clear form button
+     */
     @FXML // fx:id="btnClear"
     private Button btnClear; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the update customer form button
+     */
     @FXML // fx:id="btnUpdateCustomer"
     private Button btnUpdateCustomer; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the add customer form button
+     */
     @FXML // fx:id="btnAddCustomer"
     private Button btnAddCustomer; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the form error messages
+     */
     @FXML // fx:id="lbErrorMessage"
     private Label lbErrorMessage; // Value injected by FXMLLoader
 
-    // Container for to store and move around form data
+    /**
+     * Container for to store and move around form data
+     */
     private final HashMap<String, String> formData = new HashMap<>();
 
-    // Action handler for signing out
+    /**
+     * Action handler for signing out
+     * @param event when the sign out button is clicked
+     * @throws IOException thrown if a fxml file resource is not found
+     */
     @FXML
     void onSignOutBtnClicked(ActionEvent event) throws IOException {
         AppHelper.clearSessionData();
@@ -158,11 +280,18 @@ public class CustomersController implements Initializable {
         primaryStage.setScene(new Scene(parent));
     }
 
-    // has the state and country been selected already storage values
+    /**
+     * boolean field for the question have the state been selected already? storage values
+     */
     private boolean stateHasBeenSelected = false;
+    /**
+     * boolean field for the question have the country been selected already? storage values
+     */
     private boolean countryHasBeenSelected = false;
 
-    // When a button is clicked add the form data to the hashmap
+    /**
+     * Add the form data to the hashmap
+     */
     private void addFormDataToMap() {
         formData.clear();
         formData.put("customer name",tfName.getText());
@@ -174,7 +303,10 @@ public class CustomersController implements Initializable {
         formData.put("postal code", tfPostalCode.getText());
     }
 
-    // return the first division (state) name
+    /**
+     * returns the first division (state) name
+     * @return return the first division (state) name
+     */
     private ObservableList<String> getFirstDivisionNames() {
         ObservableList<String> names = FXCollections.observableArrayList();
         for (FirstDivision state: AppHelper.firstDivisions) {
@@ -183,7 +315,10 @@ public class CustomersController implements Initializable {
         return names;
     }
 
-    // return all/only country names from countries
+    /**
+     * returns all/only country names from countries
+     * @return return all/only country names from countries
+     */
     private ObservableList<String> getCountryNames() {
         ObservableList<String> names = FXCollections.observableArrayList();
         for (Country country: AppHelper.countries) {
@@ -192,7 +327,9 @@ public class CustomersController implements Initializable {
         return names;
     }
 
-    // Add customer data to form when one is selected from table view
+    /**
+     * Add customer data to form when one is selected from table view
+     */
     private void addDataToForm() {
         tfCustomerID.setText(String.valueOf(tvCustomerTable.getSelectionModel().getSelectedItem().getCustomerID()));
         tfAddress.setText(tvCustomerTable.getSelectionModel().getSelectedItem().getAddress());
@@ -204,7 +341,9 @@ public class CustomersController implements Initializable {
         cbCountry.getSelectionModel().select(tvCustomerTable.getSelectionModel().getSelectedItem().getCountry());
     }
 
-    // Clear all form data
+    /**
+     * Clear all form data
+     */
     private void clearFormData() {
         btnUpdateCustomer.setDisable(true);
         btnAddCustomer.setDisable(false);
@@ -224,7 +363,10 @@ public class CustomersController implements Initializable {
         cbCountry.setItems(getCountryNames());
     }
 
-    // get next available customer id number
+    /**
+     * get next available customer id number
+     * @return get next available customer id number
+     */
     private int autoNextGenCustomerID() {
         TreeSet<Integer> temp = new TreeSet<>();
         int curr = 1;
@@ -239,11 +381,37 @@ public class CustomersController implements Initializable {
                 return curr;
             }
         }
-        System.out.println(temp);
         return curr;
     }
 
-    // This method is called when initialization is complete. Override from Initializable Interface
+    /**
+     * filters states by selected country
+     */
+    private void filterStatesByCountry() {
+        ObservableList<String> filteredStates = FXCollections.observableArrayList();
+        filteredStates.clear();
+        if(!stateHasBeenSelected) {
+            Country tempCountry = AppHelper.getCountry(cbCountry.getValue());
+            for (FirstDivision firstDivision : AppHelper.firstDivisions) {
+                if (tempCountry != null && firstDivision.getCountryID() == tempCountry.getCountryID()) {
+                    filteredStates.add(firstDivision.getDivisionName());
+                }
+            }
+            cbState.setItems(filteredStates);
+            if (!tvCustomerTable.getSelectionModel().isEmpty()){
+                cbState.getSelectionModel().select(tvCustomerTable.getSelectionModel().getSelectedItem().getState());
+            }
+        }
+        countryHasBeenSelected = true;
+    }
+
+    /**
+     * This method is called when initialization is complete. Override from Initializable Interface;
+     * Handles all of the scene controls functionality
+     *
+     * @param url URL location of the FXML file that was given to the FXMLLoader
+     * @param resourceBundle ResourceBundle that was given to the FXMLLoader
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -272,7 +440,6 @@ public class CustomersController implements Initializable {
 
 
         // temp container for filtered states and countries to leave the original list unchanged
-        ObservableList<String> filteredStates = FXCollections.observableArrayList();
         ObservableList<String> filteredCountries = FXCollections.observableArrayList();
 
         // uncomment to show database structure in console
@@ -303,7 +470,7 @@ public class CustomersController implements Initializable {
                     AppHelper.localeRB.getString("altStartingSoon") + AppHelper.apptTDSoon.getTime().toString() + "!");
         }
 
-        // Fill state and country comboboxes with data originally from database
+        // Fill state and country combo boxes with data originally from database
         cbState.setItems(getFirstDivisionNames());
         cbCountry.setItems(getCountryNames());
 
@@ -323,23 +490,23 @@ public class CustomersController implements Initializable {
         });
 
         // Customize the data per country/state selected
-        cbState.setOnAction(event -> {
-            filteredCountries.clear();
-            if(!countryHasBeenSelected) {
-                FirstDivision tempFD = AppHelper.getFirstDivision(cbState.getValue());
-                for (Country country : AppHelper.countries) {
-                    if (tempFD != null && tempFD.getCountryID() == country.getCountryID()) {
-                        filteredCountries.add(country.getCountryName());
-                    }
-                }
-                cbCountry.setItems(filteredCountries);
-            }
-            stateHasBeenSelected = true;
-        });
+//        cbState.setOnAction(event -> {
+//            filteredCountries.clear();
+//            if(!countryHasBeenSelected) {
+//                FirstDivision tempFD = AppHelper.getFirstDivision(cbState.getValue());
+//                for (Country country : AppHelper.countries) {
+//                    if (tempFD != null && tempFD.getCountryID() == country.getCountryID()) {
+//                        filteredCountries.add(country.getCountryName());
+//                    }
+//                }
+//                cbCountry.setItems(filteredCountries);
+//            }
+//            stateHasBeenSelected = true;
+//        });
 
-        // Customize the data per country/state selected
+        // Customize the state data per country selected
         cbCountry.setOnAction(event -> {
-            filteredStates.clear();
+            ObservableList<String> filteredStates = FXCollections.observableArrayList();
             if(!stateHasBeenSelected) {
                 Country tempCountry = AppHelper.getCountry(cbCountry.getValue());
                 for (FirstDivision firstDivision : AppHelper.firstDivisions) {
@@ -350,11 +517,15 @@ public class CustomersController implements Initializable {
                 cbState.setItems(filteredStates);
             }
             countryHasBeenSelected = true;
+//            filterStatesByCountry(filteredStates);
         });
 
         // Once customer table clicked attempt to add clicked items data to form
         tvCustomerTable.setOnMouseClicked(event -> {
             addDataToForm();
+            filterStatesByCountry();
+            cbState.getSelectionModel().select(tvCustomerTable.getSelectionModel().getSelectedItem().getState());
+            System.out.println(cbState.getSelectionModel().getSelectedItem());
             btnAddCustomer.setDisable(true);
             btnUpdateCustomer.setDisable(false);
             lbErrorMessage.setVisible(false);
@@ -403,8 +574,9 @@ public class CustomersController implements Initializable {
             addFormDataToMap();
             String statusMessage = AppHelper.checkFormCorrectness(formData);
             if (statusMessage.equals("correct")) {
+                int index = tvCustomerTable.getSelectionModel().getSelectedIndex();
                 DBHelper.updateCustomer(AppHelper.createCustomerFromFormData(formData));
-                AppHelper.customers.set(Integer.parseInt(formData.get("customer ID"))-1, AppHelper.createCustomerFromFormData(formData));
+                AppHelper.customers.set(index, AppHelper.createCustomerFromFormData(formData));
                 clearFormData();
             } else {
                 lbErrorMessage.setText(statusMessage);

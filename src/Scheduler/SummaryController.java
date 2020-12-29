@@ -4,7 +4,6 @@ package Scheduler;
  * @author Jessie Burton
  */
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -23,47 +22,89 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-// Class for handling the summary scene
+/**
+ * Class for handling the summary scene
+ */
 public class SummaryController implements Initializable {
 
-    @FXML // ResourceBundle that was given to the FXMLLoader
+    /**
+     * ResourceBundle that was given to the FXMLLoader
+     */
+    @FXML
     private ResourceBundle resources;
 
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
+    /**
+     * URL location of the FXML file that was given to the FXMLLoader
+     */
+    @FXML
     private URL location;
 
+    /**
+     * FXML field for the Summary Report label
+     */
     @FXML // fx:id="lbSummaryReport"
     private Label lbSummaryReport; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the customer appointments report
+     */
     @FXML // fx:id="lbCustomerApptRt1"
     private Label lbCustomerApptRt1; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the customer appointments report label
+     */
     @FXML // fx:id="lbCustomerApptRTLB"
     private Label lbCustomerApptRTLB; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the customer appointments report
+     */
     @FXML // fx:id="lbCustomerApptRt"
     private Label lbCustomerApptRt; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the contact schedule report label
+     */
     @FXML // fx:id="lbContactApptRtLB"
     private Label lbContactApptRtLB; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the contact schedule report
+     */
     @FXML // fx:id="lbContactApptRt"
     private Label lbContactApptRt; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the customer by location label
+     */
     @FXML // fx:id="lbCustomerByLocationLB"
     private Label lbCustomerByLocationLB; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for the customer by location report
+     */
     @FXML // fx:id="lbCustomerByLocation"
     private Label lbCustomerByLocation; // Value injected by FXMLLoader
 
+    /**
+     * FXML field for returning back button
+     */
     @FXML // fx:id="btBackRt"
     private Button btBackRt; // Value injected by FXMLLoader
 
-    // Storage variables for total appointments by month and type
+    /**
+     * Storage variables for total appointments by month and type
+     */
     private final HashMap<String, Integer> totalByType = new HashMap<>();
+    /**
+     * Storage variables for total appointments by month and type
+     */
     private final HashMap<String, Integer> totalByMonth = new HashMap<>();
 
-    // Method for getting total # of appts by type
+    /**
+     * Method for getting total # of appts by type
+     */
     private void getTotalByType() {
         for (Appointments appts: AppHelper.appointments) {
             int total = 1;
@@ -76,7 +117,9 @@ public class SummaryController implements Initializable {
         }
     }
 
-    // Method for getting total # of appts by month
+    /**
+     * Method for getting total # of appts by month
+     */
     private void getTotalByMonth() {
         for (Appointments appts: AppHelper.appointments) {
             int total = 1;
@@ -90,7 +133,10 @@ public class SummaryController implements Initializable {
         }
     }
 
-    // Method for returning all contact schedules
+    /**
+     * returns all contact schedules
+     * @return returns all contact schedules
+     */
     private String getContactSched() {
         DBHelper.getCustomerSched();
         StringBuilder fullString = new StringBuilder();
@@ -113,7 +159,9 @@ public class SummaryController implements Initializable {
         return fullString.toString();
     }
 
-    // Method for getting total number customers by location
+    /**
+     * Method for getting total number customers by location
+     */
     private void getTotalCustomersByLocation() {
         for (Customers customer : AppHelper.customers) {
 
@@ -126,6 +174,13 @@ public class SummaryController implements Initializable {
         }
     }
 
+    /**
+     * FXML Override; This method is called by the FXMLLoader when initialization is complete. Handles
+     * all scene control action events and form data control
+     *
+     * @param url URL location of the FXML file that was given to the FXMLLoader
+     * @param resourceBundle ResourceBundle that was given to the FXMLLoader
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -158,7 +213,9 @@ public class SummaryController implements Initializable {
         // set the number of customer by country label
         lbCustomerByLocation.setText(AppHelper.numCustomerByLocation.toString());
 
-        // Go back to the last scene according to backWhere variable
+        /**
+         * Go back to the last scene according to backWhere variable
+         */
         btBackRt.setOnAction(event -> {
             Parent parent = null;
             try {
@@ -176,8 +233,10 @@ public class SummaryController implements Initializable {
 
     }
 
+    /**
+     * This method is called by the FXMLLoader when initialization is complete
+     */
     @FXML
-        // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert lbSummaryReport != null : "fx:id=\"lbSummaryReport\" was not injected: check your FXML file 'SummaryReport.fxml'.";
         assert lbCustomerApptRTLB != null : "fx:id=\"lbCustomerApptRTLB\" was not injected: check your FXML file 'SummaryReport.fxml'.";

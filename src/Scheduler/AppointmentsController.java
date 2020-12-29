@@ -21,159 +21,314 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+/**
+ * Class to control all UI on the appointments scene
+ */
 public class AppointmentsController implements Initializable {
 
+    /**
+     * FXML ResourceBundle that was given to the FXMLLoader
+     */
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
 
+    /**
+     * FXML URL location of the FXML file that was given to the FXMLLoader
+     */
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
 
+    /**
+     * FXML value for the sign out label
+     */
     @FXML // fx:id="lbSignOut"
     private Label lbSignOut; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the sign out label
+     */
     @FXML // fx:id="btnSignOut"
     private Button btnSignOut; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Customers label
+     */
     @FXML // fx:id="lbCustomers"
     private Label lbCustomers; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Customers scene button
+     */
     @FXML // fx:id="btnCustomers"
     private Button btnCustomers; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Reports label
+     */
     @FXML // fx:id="lbReports"
     private Label lbReports; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Reports scene button
+     */
     @FXML // fx:id="btnReports"
     private Button btnReports; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointment alert label
+     */
     @FXML // fx:id="lbAppointmentAlert"
     private Label lbAppointmentAlert; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointment by week radio button
+     */
     @FXML // fx:id="rbApptByWeek"
     private RadioButton rbApptByWeek; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointments filter radio buttons toggle group
+     */
     @FXML // fx:id="tgAppointments"
     private ToggleGroup tgAppointments; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointment by month radio button
+     */
     @FXML // fx:id="rbApptByMonth"
     private RadioButton rbApptByMonth; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the appointments table view
+     */
     @FXML // fx:id="tvAppointments"
     private TableView<Appointments> tvAppointments; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointment ID table column
+     */
     @FXML // fx:id="tcID"
     private TableColumn<Appointments, Integer> tcID; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointment title table column
+     */
     @FXML // fx:id="tcTitle"
     private TableColumn<Appointments, String> tcTitle; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointment description table column
+     */
     @FXML // fx:id="tcDescription"
     private TableColumn<Appointments, String> tcDescription; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointment location table column
+     */
     @FXML // fx:id="tcLocation"
     private TableColumn<Appointments, String> tcLocation; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointment contact table column
+     */
     @FXML // fx:id="tcContact"
     private TableColumn<Appointments, String> tcContact; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointment type column
+     */
     @FXML // fx:id="tcType"
     private TableColumn<Appointments, String> tcType; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointment start table column
+     */
     @FXML // fx:id="tcStartDT"
     private TableColumn<Appointments, Calendar> tcStartDT; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointment end table column
+     */
     @FXML // fx:id="tcEndDT"
     private TableColumn<Appointments, Calendar> tcEndDT; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the Appointment customre ID table column
+     */
     @FXML // fx:id="tcCustomerID"
     private TableColumn<Appointments, Integer> tcCustomerID; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the delete appointment button
+     */
     @FXML // fx:id="btnDeleteAppointment"
     private Button btnDeleteAppointment; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the table error message label
+     */
     @FXML // fx:id="lbTableErrorMessage"
     private Label lbTableErrorMessage; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the appointment id form label
+     */
     @FXML // fx:id="lbApptID"
     private Label lbApptID; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the appointment id text field
+     */
     @FXML // fx:id="tfAppointmentID"
     private TextField tfAppointmentID; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the contact form label
+     */
     @FXML // fx:id="lbContact"
     private Label lbContact; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the contact person combo box
+     */
     @FXML // fx:id="cbContactPerson"
     private ComboBox<String> cbContactPerson; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the title form label
+     */
     @FXML // fx:id="lbTitle"
     private Label lbTitle; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the appointment title text field
+     */
     @FXML // fx:id="tfTitle"
     private TextField tfTitle; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the type form label
+     */
     @FXML // fx:id="lbType"
     private Label lbType; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the appointment type text field
+     */
     @FXML // fx:id="tfType"
     private TextField tfType; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the location form label
+     */
     @FXML // fx:id="lbLocation"
     private Label lbLocation; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the appointment location text field
+     */
     @FXML // fx:id="tfLocation"
     private TextField tfLocation; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the customer ID form label
+     */
     @FXML // fx:id="lbCustomerID"
     private Label lbCustomerID; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the appointment customer ID text field
+     */
     @FXML // fx:id="tfCustomerID"
     private TextField tfCustomerID; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the start form label
+     */
     @FXML // fx:id="lbStart"
     private Label lbStart; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the appointment start time text field
+     */
     @FXML // fx:id="tfStartDT"
     private TextField tfStartDT; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the end form label
+     */
     @FXML // fx:id="lbEnd"
     private Label lbEnd; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the appointment end time text field
+     */
     @FXML // fx:id="tfEndDT"
     private TextField tfEndDT; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the user ID form label
+     */
     @FXML // fx:id="lbUserID"
     private Label lbUserID; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the appointment user ID text field
+     */
     @FXML // fx:id="tfUserID"
     private TextField tfUserID; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the update appointments button
+     */
     @FXML // fx:id="btnUpdateAppointment"
     private Button btnUpdateAppointment; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the add appointments button
+     */
     @FXML // fx:id="btnAddAppointment"
     private Button btnAddAppointment; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the clear form button
+     */
     @FXML // fx:id="btnClearForm"
     private Button btnClearForm; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the form error message label
+     */
     @FXML // fx:id="lbFormErrorMessage"
     private Label lbFormErrorMessage; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the description form label
+     */
     @FXML // fx:id="lbDescription"
     private Label lbDescription; // Value injected by FXMLLoader
 
+    /**
+     * FXML value for the appointment description text field
+     */
     @FXML // fx:id="tfDescription"
     private TextField tfDescription; // Value injected by FXMLLoader
 
-    // Storage for form data
+
+    /**
+     * Hash map storage for form data to map proper text field with proper value
+     */
     private final HashMap<String, String> formData = new HashMap<>();
 
-    // Current calendar instance
+
+    /**
+     * Current calendar instance of the current logged in user
+     */
     public Calendar calendar = Calendar.getInstance();
 
-    // Add data from the form to the storage hashmap
+    /**
+     * Add data from the form to the storage hashmap, mapping values to proper keys
+     */
     private void addFormDataToMap() {
         formData.clear();
         formData.put("appointment ID", tfAppointmentID.getText());
@@ -189,7 +344,12 @@ public class AppointmentsController implements Initializable {
 
     }
 
-    // get index of selected item of the tableview once clicked
+    /**
+     * get index of selected item of the tableview once clicked
+     * @param ID int value of appointment ID
+     * @param toWhichCollection string value representing how the appointments table view is currently filtered
+     * @return int value of the current index within table view
+     */
     private int getIndex(int ID, String toWhichCollection) {
         int currentIndex = -1;
         switch (toWhichCollection) {
@@ -220,7 +380,10 @@ public class AppointmentsController implements Initializable {
         return currentIndex;
     }
 
-    // Get all contact names and put them in a list
+    /**
+     * Get all contact names and put them in a list
+     * @return list of all contact names only
+     */
     private ObservableList<String> getContactNames() {
         ObservableList<String> names = FXCollections.observableArrayList();
         for (Contacts contact: AppHelper.contacts) {
@@ -229,7 +392,9 @@ public class AppointmentsController implements Initializable {
         return names;
     }
 
-    // Once an appointment is clicked, add its data to the form for editing
+    /**
+     * Once an appointment is clicked, add its data to the form for editing
+     */
     private void addDataToForm() {
         tfAppointmentID.setText(String.valueOf(tvAppointments.getSelectionModel().getSelectedItem().getAppointmentID()));
         tfTitle.setText(tvAppointments.getSelectionModel().getSelectedItem().getTitle());
@@ -245,10 +410,12 @@ public class AppointmentsController implements Initializable {
 
     }
 
-    // Clear all of the form data storage and text fields
+    /**
+     * Clear all of the form data storage and text fields
+     */
     private void clearFormData() {
         formData.clear();
-        // set the form buttons to default disablity position
+        // set the form buttons to default disability position
         btnUpdateAppointment.setDisable(true);
         btnAddAppointment.setDisable(false);
         tfCustomerID.clear();
@@ -266,13 +433,16 @@ public class AppointmentsController implements Initializable {
 
     }
 
-    // Get the next available number for the appointment ID field
+    /**
+     * Get the next available number for the appointment ID field
+     * @return int value of the next available number for the appointment ID field
+     */
     private int autoNextGenApptID() {
         TreeSet<Integer> temp = new TreeSet<>();
         int curr = 1;
 
-        for (Appointments appt : tvAppointments.getItems()) {
-            temp.add(tcID.getCellData(appt));
+        for (Appointments appt : AppHelper.appointments) {
+            temp.add(appt.getAppointmentID());
         }
         for (int i = 0; i < temp.size(); i++) {
             if (temp.contains(curr)) {
@@ -284,44 +454,172 @@ public class AppointmentsController implements Initializable {
         return curr;
     }
 
+    /**
+     * Filter appointments by current Week
+     */
+    private void filterByWeek() {
+        AppHelper.apptsByWeek.clear();
+        int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
 
+        for (Appointments appt : AppHelper.appointments) {
+            if (appt.getStart().get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
+                if (appt.getStart().get(Calendar.WEEK_OF_YEAR) == currentWeek) {
+                    AppHelper.apptsByWeek.add(appt);
+                }
+            }
+        }
+    }
+
+    /**
+     * Filter appointments by current Month
+     */
+    private void filterByMonth() {
+        AppHelper.apptsByMonth.clear();
+        int currentMonth = calendar.get(Calendar.MONTH);
+
+        for (Appointments appt : AppHelper.appointments) {
+            if (appt.getStart().get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
+                if (appt.getStart().get(Calendar.MONTH) == currentMonth) {
+                    AppHelper.apptsByMonth.add(appt);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * FXML Override; This method is called by the FXMLLoader when initialization is complete. Handles
+     * all scene control action events and form data control
+     *
+     * {@link #btnClearForm} The lambda expression btnClearForm.setOnAction(... was used because it it only needed to be called during
+     * after an action had taken place and had a very simple job to do. call 1 method to clear the form and change
+     * a couple of button options. Makes for very concise and readable code.
+     *
+     * {@link #btnReports} The lambda expression btnReports.setOnAction(... was used because its purpose was to only change the scene
+     * once clicked, and that is functional and atomic. Makes it very concise and readable.
+     *
+     * @param url URL location of the FXML file that was given to the FXMLLoader
+     * @param resourceBundle ResourceBundle that was given to the FXMLLoader
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        // Set display text in proper language
+        /**
+         * Set display text in proper language
+         */
         lbCustomers.setText(AppHelper.localeRB.getString("lbCustomers"));
+        /**
+         * Set display text in proper language
+         */
         lbSignOut.setText(AppHelper.localeRB.getString("lbSignOut"));
+        /**
+         * Set display text in proper language
+         */
         rbApptByWeek.setText(AppHelper.localeRB.getString("rbApptByWeek"));
+        /**
+         * Set display text in proper language
+         */
         rbApptByMonth.setText(AppHelper.localeRB.getString("rbApptByMonth"));
+        /**
+         * Set display text in proper language
+         */
         tcID.setText(AppHelper.localeRB.getString("ID"));
+        /**
+         * Set display text in proper language
+         */
         tcTitle.setText(AppHelper.localeRB.getString("Title"));
+        /**
+         * Set display text in proper language
+         */
         tcDescription.setText(AppHelper.localeRB.getString("Description"));
+        /**
+         * Set display text in proper language
+         */
         tcLocation.setText(AppHelper.localeRB.getString("Location"));
+        /**
+         * Set display text in proper language
+         */
         tcType.setText(AppHelper.localeRB.getString("Type"));
-        tcStartDT.setText(AppHelper.localeRB.getString("Start"));
-        tcEndDT.setText(AppHelper.localeRB.getString("End"));
+        /**
+         * Set display text in proper language
+         */
+        tcStartDT.setText(AppHelper.localeRB.getString("StartDT"));
+        /**
+         * Set display text in proper language
+         */
+        tcEndDT.setText(AppHelper.localeRB.getString("EndDT"));
+        /**
+         * Set display text in proper language
+         */
         tcContact.setText(AppHelper.localeRB.getString("tcContact"));
+        /**
+         * Set display text in proper language
+         */
         tcCustomerID.setText(AppHelper.localeRB.getString("CustomerID"));
+        /**
+         * Set display text in proper language
+         */
         lbApptID.setText(AppHelper.localeRB.getString("lbApptID"));
+        /**
+         * Set display text in proper language
+         */
         lbCustomerID.setText(AppHelper.localeRB.getString("CustomerID"));
+        /**
+         * Set display text in proper language
+         */
         lbTitle.setText(AppHelper.localeRB.getString("Title"));
+        /**
+         * Set display text in proper language
+         */
         lbContact.setText(AppHelper.localeRB.getString("lbContact"));
+        /**
+         * Set display text in proper language
+         */
         lbLocation.setText(AppHelper.localeRB.getString("Location"));
+        /**
+         * Set display text in proper language
+         */
         lbType.setText(AppHelper.localeRB.getString("Type"));
+        /**
+         * Set display text in proper language
+         */
         lbStart.setText(AppHelper.localeRB.getString("Start"));
+        /**
+         * Set display text in proper language
+         */
         lbEnd.setText(AppHelper.localeRB.getString("End"));
+        /**
+         * Set display text in proper language
+         */
         lbDescription.setText(AppHelper.localeRB.getString("Description"));
+        /**
+         * Set display text in proper language
+         */
         lbUserID.setText(AppHelper.localeRB.getString("UserID"));
+        /**
+         * Set display text in proper language
+         */
         btnAddAppointment.setText(AppHelper.localeRB.getString("btnAddAppt"));
+        /**
+         * Set display text in proper language
+         */
         btnClearForm.setText(AppHelper.localeRB.getString("btnClear"));
+        /**
+         * Set display text in proper language
+         */
         btnUpdateAppointment.setText(AppHelper.localeRB.getString("btnUpdateAppt"));
+        /**
+         * Set display text in proper language
+         */
         btnDeleteAppointment.setText(AppHelper.localeRB.getString("btnDeleteAppt"));
 
         // Clear form data, just in case
         formData.clear();
 
         // Get all initial data from data that will be used in this screen
-        DBHelper.getAllAppointments();
+//        DBHelper.getAllAppointments();
+        filterByWeek();
+        filterByMonth();
 
         // Check for appointments that is within 15 min of login.
         if (AppHelper.apptIDSoon != -1) {
@@ -385,19 +683,29 @@ public class AppointmentsController implements Initializable {
             }
         }
 
-        // Set the appointments table with correct data depending on sort order of months
+        /**
+         * Lamda Expression
+         * Set the appointments table with correct data depending on filter order of months
+         */
         rbApptByMonth.setOnAction(event -> {
             tvAppointments.setItems(AppHelper.apptsByMonth);
             tvAppointments.refresh();
         });
 
-        // Set the appointments table with correct data depending on sort order of weeks
+        /**
+         * Lamda Expression
+         * Set the appointments table with correct data depending on sort order of weeks
+         */
         rbApptByWeek.setOnAction(event -> {
             tvAppointments.setItems(AppHelper.apptsByWeek);
             tvAppointments.refresh();
         });
 
-        // If the appointments table is clicked add the data to the form for editing and set form buttons and remove error messages
+
+        /**
+         * Lamda Expression
+         * If the appointments table is clicked add the data to the form for editing and set form buttons and remove error messages
+         */
         tvAppointments.setOnMouseClicked(event -> {
             addDataToForm();
             btnAddAppointment.setDisable(true);
@@ -410,45 +718,54 @@ public class AppointmentsController implements Initializable {
         // Once add appointment button is clicked check the fields for correctness and attempt to add to database
         btnAddAppointment.setOnAction(event -> {
             addFormDataToMap();
-            String status = AppHelper.checkFormCorrectness(formData);
-            if (status.equals("correct")) {
-                try {
-                    AppHelper.startCalendar = AppHelper.createApptFromFormData(formData).getStart();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+            StringBuilder status = new StringBuilder();
+            status.append(AppHelper.checkFormCorrectness(formData));
+            if (status.toString().equals("correct")) {
+                if (AppHelper.overlapAppt(formData.get("start"), formData.get("end"))) {
+                    status.replace(0, status.length(), AppHelper.localeRB.getString("erOverlap"));
+                    lbFormErrorMessage.setText(String.valueOf(status));
+                    lbFormErrorMessage.setVisible(true);
+                } else {
+                    try {
+                        AppHelper.startCalendar = AppHelper.createApptFromFormData(formData).getStart();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        AppHelper.endCalendar = AppHelper.createApptFromFormData(formData).getEnd();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        DBHelper.addAppointment(AppHelper.createApptFromFormData(formData));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        AppHelper.appointments.add(AppHelper.createApptFromFormData(formData));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        AppHelper.apptsByMonth.add(AppHelper.createApptFromFormData(formData));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        AppHelper.apptsByWeek.add(AppHelper.createApptFromFormData(formData));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    DBHelper.getAllAppointments();
+                    filterByWeek();
+                    filterByWeek();
+                    tvAppointments.refresh();
+                    clearFormData();
+                    tfAppointmentID.setText(String.valueOf(autoNextGenApptID()));
                 }
-                try {
-                    AppHelper.endCalendar = AppHelper.createApptFromFormData(formData).getStart();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    DBHelper.addAppointment(AppHelper.createApptFromFormData(formData));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    AppHelper.appointments.add(AppHelper.createApptFromFormData(formData));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    AppHelper.apptsByMonth.add(AppHelper.createApptFromFormData(formData));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    AppHelper.apptsByWeek.add(AppHelper.createApptFromFormData(formData));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                DBHelper.getAllAppointments();
-                tvAppointments.refresh();
-                clearFormData();
-                tfAppointmentID.setText(String.valueOf(autoNextGenApptID()));
             } else {
                 // if errors occur describe them
-                lbFormErrorMessage.setText(status);
+                lbFormErrorMessage.setText(String.valueOf(status));
                 lbFormErrorMessage.setVisible(true);
             }
             tvAppointments.refresh();
@@ -476,6 +793,8 @@ public class AppointmentsController implements Initializable {
                     AppHelper.apptsByWeek.remove(tvAppointments.getSelectionModel().getSelectedItem());
                     AppHelper.appointments.remove(tvAppointments.getSelectionModel().getSelectedItem());
                     DBHelper.getAllAppointments();
+                    filterByWeek();
+                    filterByWeek();
                     tvAppointments.refresh();
                     clearFormData();
                     tfAppointmentID.setText(String.valueOf(autoNextGenApptID()));
@@ -490,53 +809,65 @@ public class AppointmentsController implements Initializable {
         // Attempt the update the appointment in the data base with values from form
         btnUpdateAppointment.setOnAction(event -> {
             addFormDataToMap();
-            String status = AppHelper.checkFormCorrectness(formData);
-            if (status.equals("correct")) {
-                try {
-                    DBHelper.updateAppointment(AppHelper.createApptFromFormData(formData));
-                } catch (ParseException e) {
-                    e.printStackTrace();
+            StringBuilder status = new StringBuilder();
+            status.append(AppHelper.checkFormCorrectness(formData));
+            if (String.valueOf(status).equals("correct")) {
+                if (AppHelper.overlapAppt(formData.get("start"), formData.get("end"))) {
+                    status.replace(0, status.length(), AppHelper.localeRB.getString("erOverlap"));
+                    lbFormErrorMessage.setText(status.toString());
+                    lbFormErrorMessage.setVisible(true);
+                } else {
+                    try {
+                        DBHelper.updateAppointment(AppHelper.createApptFromFormData(formData));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if (rbApptByWeek.isSelected()) {
+                        Appointments selAppt = tvAppointments.getSelectionModel().getSelectedItem();
+                        try {
+                            AppHelper.apptsByWeek.set(tvAppointments.getSelectionModel().getSelectedIndex(), AppHelper.createApptFromFormData(formData));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+//                        try {
+//                            AppHelper.apptsByMonth.set(getIndex(selAppt.getAppointmentID(), "month"), AppHelper.createApptFromFormData(formData));
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
+//                        try {
+//                            AppHelper.appointments.set(getIndex(selAppt.getAppointmentID(), "all"), AppHelper.createApptFromFormData(formData));
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
+                    } else if (rbApptByMonth.isSelected()) {
+                        Appointments selAppt = tvAppointments.getSelectionModel().getSelectedItem();
+//                        try {
+//                            AppHelper.apptsByWeek.set(getIndex(selAppt.getAppointmentID(), "week"), AppHelper.createApptFromFormData(formData));
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
+                        try {
+                            AppHelper.apptsByMonth.set(tvAppointments.getSelectionModel().getSelectedIndex(), AppHelper.createApptFromFormData(formData));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+//                        try {
+//                            AppHelper.appointments.set(getIndex(selAppt.getAppointmentID(), "all"), AppHelper.createApptFromFormData(formData));
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                    DBHelper.getAllAppointments();
+                    filterByWeek();
+                    filterByWeek();
+                    tvAppointments.refresh();
+                    clearFormData();
+                    tfAppointmentID.setText(String.valueOf(autoNextGenApptID()));
                 }
-                if (rbApptByWeek.isSelected()){
-                    Appointments selAppt = tvAppointments.getSelectionModel().getSelectedItem();
-                    try {
-                        AppHelper.apptsByWeek.set(tvAppointments.getSelectionModel().getSelectedIndex(), AppHelper.createApptFromFormData(formData));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        AppHelper.apptsByMonth.set(getIndex(selAppt.getAppointmentID(), "month"), AppHelper.createApptFromFormData(formData));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        AppHelper.appointments.set(getIndex(selAppt.getAppointmentID(), "all"), AppHelper.createApptFromFormData(formData));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                } else if (rbApptByMonth.isSelected()){
-                    Appointments selAppt = tvAppointments.getSelectionModel().getSelectedItem();
-                    try {
-                        AppHelper.apptsByWeek.set(getIndex(selAppt.getAppointmentID(), "week"), AppHelper.createApptFromFormData(formData));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        AppHelper.apptsByMonth.set(tvAppointments.getSelectionModel().getSelectedIndex(), AppHelper.createApptFromFormData(formData));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        AppHelper.appointments.set(getIndex(selAppt.getAppointmentID(), "all"), AppHelper.createApptFromFormData(formData));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-                tvAppointments.refresh();
-                clearFormData();
-                tfAppointmentID.setText(String.valueOf(autoNextGenApptID()));
             } else {
-                lbFormErrorMessage.setText(status);
+                // 2020-12-21 09:30:00 AM
+                String statusStr = String.valueOf(status);
+                lbFormErrorMessage.setText(statusStr);
                 lbFormErrorMessage.setVisible(true);
             }
         });
@@ -576,7 +907,7 @@ public class AppointmentsController implements Initializable {
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
-            Stage primaryStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             primaryStage.setScene(new Scene(parent));
         });
 
@@ -594,6 +925,9 @@ public class AppointmentsController implements Initializable {
 
     }
 
+    /**
+     * FXML This method is called by the FXMLLoader when initialization is complete
+     */
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert lbSignOut != null : "fx:id=\"lbSignOut\" was not injected: check your FXML file 'AppointmentsScene.fxml'.";
